@@ -1,0 +1,38 @@
+{
+  // ✅ Prettier as the default formatter
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ✅ Format on save
+  "editor.formatOnSave": true,
+
+  // ✅ ESLint auto-fix on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  // ✅ Tailwind CSS IntelliSense
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html"
+  },
+
+  // ✅ Organize imports automatically
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll": true
+  },
+
+  // ✅ Consistent tab/space setup
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  // ✅ Show prettier status on the bottom bar
+  "prettier.statusBar.enabled": true,
+
+  // ✅ Disable conflicting formatters
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
