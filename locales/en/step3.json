@@ -1,0 +1,8 @@
+{
+  "title": "Situation Descriptions",
+  "fields": {
+    "financialSituation": "Current Financial Situation",
+    "employmentCircumstances": "Employment Circumstances",
+    "reasonForApplying": "Reason for Applying"
+  }
+}

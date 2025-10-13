@@ -1,4 +1,4 @@
-import { AI_CONFIG, AISuggestionConfig, FieldKey } from '@lib/aiConfig';
+import { AI_CONFIG, AISuggestionConfig, FieldKey } from '@lib/ai/aiConfig';
 import { fetchAISuggestion } from './apiClient';
 import { logAIError, logAISuggestion } from './logger';
 import { buildAIMessages } from './promptBuilder';

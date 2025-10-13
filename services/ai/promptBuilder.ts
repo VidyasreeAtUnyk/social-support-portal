@@ -1,4 +1,4 @@
-import { AISuggestionConfig, FIELD_PROMPTS, FieldKey } from '@lib/aiConfig';
+import { AISuggestionConfig, FIELD_PROMPTS, FieldKey } from '@lib/ai/aiConfig';
 
 export const buildAIMessages = (fieldKey: FieldKey, prompt: string, config: AISuggestionConfig) => {
   const sanitizedPrompt = prompt.replace(/<[^>]+>/g, '');

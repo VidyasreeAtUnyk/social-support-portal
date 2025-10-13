@@ -1,0 +1,10 @@
+{
+  "title": "المعلومات العائلية والمالية",
+  "fields": {
+    "maritalStatus": "الحالة الاجتماعية",
+    "dependents": "عدد المعالين",
+    "employmentStatus": "الحالة الوظيفية",
+    "monthlyIncome": "الدخل الشهري",
+    "housingStatus": "الحالة السكنية"
+  }
+}

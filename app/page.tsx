@@ -1,7 +1,7 @@
 'use client';
 
 import AIHelper from '@components/ai/AiHelper';
-import { FIELD_PROMPTS, FieldKey } from '@lib/aiConfig';
+import { FIELD_PROMPTS, FieldKey } from '@lib/ai/aiConfig';
 
 export default function Home() {
   // List of all fields you want AI support for

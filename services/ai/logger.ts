@@ -1,5 +1,5 @@
-import { FIELD_PROMPTS } from '@lib/aiConfig';
-import api from '@lib/api';
+import { FIELD_PROMPTS } from '@lib/ai/aiConfig';
+import api from '@lib/ai/api';
 
 export const logAISuggestion = async (
   fieldKey: keyof typeof FIELD_PROMPTS,

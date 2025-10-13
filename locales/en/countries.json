@@ -1,0 +1,6 @@
+{
+  "list": [
+    { "code": "IN", "name": "India", "phoneCode": "+91" },
+    { "code": "AE", "name": "United Arab Emirates", "phoneCode": "+971" }
+  ]
+}

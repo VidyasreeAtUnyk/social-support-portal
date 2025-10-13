@@ -1,0 +1,8 @@
+{
+  "title": "وصف الوضع الحالي",
+  "fields": {
+    "financialSituation": "الوضع المالي الحالي",
+    "employmentCircumstances": "الوضع الوظيفي",
+    "reasonForApplying": "سبب التقديم"
+  }
+}

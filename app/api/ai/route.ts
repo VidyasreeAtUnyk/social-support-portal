@@ -1,4 +1,4 @@
-import api from '@lib/api';
+import api from '@lib/ai/api';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {

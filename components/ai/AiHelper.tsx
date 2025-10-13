@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@components/ui/button';
-import { AI_CONFIG, FIELD_PROMPTS, FieldKey } from '@lib/aiConfig';
+import { AI_CONFIG, FIELD_PROMPTS, FieldKey } from '@lib/ai/aiConfig';
 import { AISuggestionResponse, getAISuggestion } from '@services/ai';
 
 import { useState } from 'react';

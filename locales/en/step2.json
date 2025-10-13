@@ -1,0 +1,10 @@
+{
+  "title": "Family & Financial Info",
+  "fields": {
+    "maritalStatus": "Marital Status",
+    "dependents": "Number of Dependents",
+    "employmentStatus": "Employment Status",
+    "monthlyIncome": "Monthly Income",
+    "housingStatus": "Housing Status"
+  }
+}

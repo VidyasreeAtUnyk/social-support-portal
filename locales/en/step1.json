@@ -1,0 +1,15 @@
+{
+  "title": "Personal Information",
+  "fields": {
+    "name": "Full Name",
+    "nationalId": "National ID",
+    "dob": "Date of Birth",
+    "gender": "Gender",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "phone": "Phone Number",
+    "email": "Email Address"
+  }
+}

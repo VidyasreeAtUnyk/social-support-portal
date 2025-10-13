@@ -1,4 +1,4 @@
-import api from '@lib/api';
+import api from '@lib/ai/api';
 import { AISuggestionResponse } from './types';
 
 export const fetchAISuggestion = async (messages: any): Promise<AISuggestionResponse> => {

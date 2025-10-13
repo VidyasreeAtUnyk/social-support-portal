@@ -1,4 +1,4 @@
-import { AI_CONFIG } from '@lib/aiConfig';
+import { AI_CONFIG } from '@lib/ai/aiConfig';
 import { getAISuggestion } from '@services/ai';
 import { AISuggestionResponse } from '@services/ai/types';
 
