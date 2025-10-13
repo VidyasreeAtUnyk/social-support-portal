@@ -1,6 +1,8 @@
 'use client';
 
 import { loadLocale } from '@lib/i18n/loadLocale';
+import { updatePersonalInfo } from '@lib/store/formSlice';
+import { useAppDispatch, useAppSelector } from '@lib/store/hooks';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -10,12 +12,14 @@ interface CountryOption {
   phoneCode: string;
 }
 
-// TODO: Fallback handling
-
 export default function ExampleI18nPage() {
   const { t, i18n } = useTranslation(['common', 'countries', 'states']);
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedState, setSelectedState] = useState('');
+  const dispatch = useAppDispatch();
+
+  const { country: selectedCountry, state: selectedState } = useAppSelector(
+    (state) => state.form.personalInfo,
+  );
+
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [states, setStates] = useState<string[]>([]);
 
@@ -27,12 +31,13 @@ export default function ExampleI18nPage() {
         loadLocale(i18n.language, 'countries'),
         loadLocale(i18n.language, 'states'),
       ]);
+
       const loadedCountries =
         (t('list', { ns: 'countries', returnObjects: true }) as CountryOption[]) || [];
-      setCountries(loadedCountries || []);
+      setCountries(loadedCountries);
     };
     loadTranslations();
-  }, [i18n.language]);
+  }, [i18n.language, t]);
 
   // Load states whenever selectedCountry changes
   useEffect(() => {
@@ -40,13 +45,18 @@ export default function ExampleI18nPage() {
       setStates([]);
       return;
     }
+
+    // Find country code by selected country name
     const countryCode = countries.find((c) => c.name === selectedCountry)?.code;
-    const loadedStates = countryCode
-      ? (t(countryCode, { ns: 'states', returnObjects: true }) as string[])
-      : [];
-    setStates(loadedStates || []);
-    setSelectedState(''); // reset state selection when country changes
-  }, [selectedCountry, countries, i18n.language]);
+
+    if (!countryCode) {
+      setStates([]);
+      return;
+    }
+
+    const loadedStates = (t(countryCode, { ns: 'states', returnObjects: true }) as string[]) || [];
+    setStates(loadedStates);
+  }, [selectedCountry, countries, i18n.language, t]);
 
   const isRTL = i18n.language === 'ar';
 
@@ -58,7 +68,7 @@ export default function ExampleI18nPage() {
       <select
         className="border p-2 mb-4 w-full"
         value={selectedCountry}
-        onChange={(e) => setSelectedCountry(e.target.value)}
+        onChange={(e) => dispatch(updatePersonalInfo({ country: e.target.value, state: '' }))}
       >
         <option value="">{t('select')}</option>
         {countries.map((c) => (
@@ -72,7 +82,7 @@ export default function ExampleI18nPage() {
       <select
         className="border p-2 w-full"
         value={selectedState}
-        onChange={(e) => setSelectedState(e.target.value)}
+        onChange={(e) => dispatch(updatePersonalInfo({ state: e.target.value }))}
         disabled={!selectedCountry}
       >
         <option value="">{t('select')}</option>
