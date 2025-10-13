@@ -7,18 +7,13 @@
 
   // ✅ ESLint auto-fix on save
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
   },
 
   // ✅ Tailwind CSS IntelliSense
   "tailwindCSS.includeLanguages": {
     "typescriptreact": "html"
-  },
-
-  // ✅ Organize imports automatically
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "source.fixAll": true
   },
 
   // ✅ Consistent tab/space setup
