@@ -34,7 +34,7 @@ This project simulates an AI-powered form assistant that helps users describe th
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/social-support-portal.git
+git clone https://github.com/VidyasreeAtUnyk/social-support-portal.git
 cd social-support-portal
 2️⃣ Install Dependencies
 bash
