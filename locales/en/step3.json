@@ -4,5 +4,20 @@
     "financialSituation": "Current Financial Situation",
     "employmentCircumstances": "Employment Circumstances",
     "reasonForApplying": "Reason for Applying"
+  },
+  "placeholders": {
+    "financialSituation": "Describe your current financial situation...",
+    "employmentCircumstances": "Describe your employment circumstances...",
+    "reasonForApplying": "Explain why you are applying for assistance..."
+  },
+  "actions": {
+    "helpMeWrite": "Help Me Write"
+  },
+  "descriptions": {
+    "aiHelp": "Our AI assistant can help you write a clear and compelling description of your situation."
+  },
+  "errors": {
+    "financialSituationRequired": "Financial situation description is required",
+    "reasonForApplyingRequired": "Reason for applying is required"
   }
 }

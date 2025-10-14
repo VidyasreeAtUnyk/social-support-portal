@@ -1,7 +1,22 @@
 {
-  "submit": "Submit",
-  "next": "Next",
-  "previous": "Previous",
+  "title": "Social Support Application",
+  "subtitle": "Apply for financial assistance",
+  "actions": {
+    "submit": "Submit Application",
+    "next": "Next",
+    "previous": "Previous",
+    "saveDraft": "Save Draft",
+    "cancel": "Cancel",
+    "clearForm": "Clear Form"
+  },
+  "success": {
+    "applicationSubmitted": "Application submitted successfully!",
+    "draftSaved": "Draft saved successfully!"
+  },
+  "errors": {
+    "submissionFailed": "Failed to submit application. Please try again.",
+    "aiGenerationFailed": "Failed to generate AI suggestion. Please try again."
+  },
   "helpMeWrite": "Help Me Write",
   "select": "Select",
   "greeting": "Hello",

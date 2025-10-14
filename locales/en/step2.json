@@ -5,6 +5,30 @@
     "dependents": "Number of Dependents",
     "employmentStatus": "Employment Status",
     "monthlyIncome": "Monthly Income",
-    "housingStatus": "Housing Status"
+    "housingStatus": "Housing Status",
+    "currency": "Currency"
+  },
+  "placeholders": {
+    "dependents": "Enter number of dependents",
+    "monthlyIncome": "Enter monthly income amount"
+  },
+  "options": {
+    "single": "Single",
+    "married": "Married",
+    "divorced": "Divorced",
+    "widowed": "Widowed",
+    "employed": "Employed",
+    "unemployed": "Unemployed",
+    "selfEmployed": "Self-Employed",
+    "retired": "Retired",
+    "student": "Student",
+    "owned": "Owned",
+    "rented": "Rented",
+    "livingWithFamily": "Living with Family",
+    "homeless": "Homeless"
+  },
+  "errors": {
+    "employmentStatusRequired": "Employment status is required",
+    "monthlyIncomeInvalid": "Monthly income must be a valid number"
   }
 }

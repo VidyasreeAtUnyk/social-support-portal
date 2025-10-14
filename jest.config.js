@@ -8,6 +8,7 @@ module.exports = {
     '^@hooks/(.*)$': '<rootDir>/hooks/$1',
     '^@lib/(.*)$': '<rootDir>/lib/$1',
     '^@store/(.*)$': '<rootDir>/store/$1',
+    '^@providers/(.*)$': '<rootDir>/providers/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],

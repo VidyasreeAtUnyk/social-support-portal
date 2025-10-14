@@ -4,5 +4,20 @@
     "financialSituation": "الوضع المالي الحالي",
     "employmentCircumstances": "الوضع الوظيفي",
     "reasonForApplying": "سبب التقديم"
+  },
+  "placeholders": {
+    "financialSituation": "اوصف وضعك المالي الحالي...",
+    "employmentCircumstances": "اوصف وضعك الوظيفي...",
+    "reasonForApplying": "اشرح سبب تقديمك للطلب..."
+  },
+  "actions": {
+    "helpMeWrite": "ساعدني على الكتابة"
+  },
+  "descriptions": {
+    "aiHelp": "يمكن لمساعد الذكاء الاصطناعي أن يساعدك في كتابة وصف واضح ومقنع لحالتك."
+  },
+  "errors": {
+    "financialSituationRequired": "وصف الوضع المالي مطلوب",
+    "reasonForApplyingRequired": "سبب التقديم مطلوب"
   }
 }

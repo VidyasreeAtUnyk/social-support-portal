@@ -1,7 +1,9 @@
 'use client';
 
+import { Footer, Header } from '@lib/designSystem/';
 import i18n from '@lib/i18n/i18n';
 import { persistor, store } from '@lib/store';
+import ThemeProviderWrapper from '@providers/ThemeProviderWrapper';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { useEffect, useState } from 'react';
 import { I18nextProvider, useTranslation } from 'react-i18next';
@@ -50,7 +52,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ) : (
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+              <I18nextProvider i18n={i18n}>
+                <ThemeProviderWrapper>
+                  <Header />
+                  {children}
+                  <Footer />
+                </ThemeProviderWrapper>
+              </I18nextProvider>
             </PersistGate>
           </Provider>
         )}

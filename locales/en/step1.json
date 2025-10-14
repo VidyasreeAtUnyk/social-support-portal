@@ -11,5 +11,28 @@
     "country": "Country",
     "phone": "Phone Number",
     "email": "Email Address"
+  },
+  "placeholders": {
+    "name": "Enter your full name",
+    "nationalId": "Enter your national ID",
+    "address": "Enter your address",
+    "city": "Enter your city",
+    "phone": "+971 xxx xxx xxx",
+    "email": "Enter your email address"
+  },
+  "options": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "state1": "California",
+    "state2": "New York",
+    "us": "United States",
+    "ca": "Canada"
+  },
+  "errors": {
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "nationalIdRequired": "National ID is required",
+    "phoneRequired": "Phone number is required"
   }
 }

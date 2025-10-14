@@ -1,7 +1,22 @@
 {
-  "submit": "إرسال",
-  "next": "التالي",
-  "previous": "السابق",
+  "title": "طلب المساعدة الاجتماعية",
+  "subtitle": "التقدم بطلب للحصول على مساعدة مالية",
+  "actions": {
+    "submit": "إرسال الطلب",
+    "next": "التالي",
+    "previous": "السابق",
+    "saveDraft": "حفظ المسودة",
+    "cancel": "إلغاء",
+    "clearForm": "مسح النموذج"
+  },
+  "success": {
+    "applicationSubmitted": "تم إرسال الطلب بنجاح!",
+    "draftSaved": "تم حفظ المسودة بنجاح!"
+  },
+  "errors": {
+    "submissionFailed": "فشل في إرسال الطلب. يرجى المحاولة مرة أخرى.",
+    "aiGenerationFailed": "فشل في توليد اقتراح الذكاء الاصطناعي. يرجى المحاولة مرة أخرى."
+  },
   "helpMeWrite": "ساعدني على الكتابة",
   "select": "اختر",
   "greeting": "مرحبا",

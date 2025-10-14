@@ -5,6 +5,30 @@
     "dependents": "عدد المعالين",
     "employmentStatus": "الحالة الوظيفية",
     "monthlyIncome": "الدخل الشهري",
-    "housingStatus": "الحالة السكنية"
+    "housingStatus": "الحالة السكنية",
+    "currency": "العملة"
+  },
+  "placeholders": {
+    "dependents": "أدخل عدد المعالين",
+    "monthlyIncome": "أدخل مبلغ الدخل الشهري"
+  },
+  "options": {
+    "single": "أعزب",
+    "married": "متزوج",
+    "divorced": "مطلق",
+    "widowed": "أرمل",
+    "employed": "موظف",
+    "unemployed": "عاطل عن العمل",
+    "selfEmployed": "يعمل لحسابه الخاص",
+    "retired": "متقاعد",
+    "student": "طالب",
+    "owned": "ملك",
+    "rented": "مستأجر",
+    "livingWithFamily": "يعيش مع العائلة",
+    "homeless": "بلا مأوى"
+  },
+  "errors": {
+    "employmentStatusRequired": "الحالة الوظيفية مطلوبة",
+    "monthlyIncomeInvalid": "الدخل الشهري يجب أن يكون رقماً صحيحاً"
   }
 }

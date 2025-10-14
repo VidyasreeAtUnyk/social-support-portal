@@ -20,6 +20,7 @@ interface FormState {
     employmentStatus: string;
     monthlyIncome: number;
     housingStatus: string;
+    currency: string;
   };
   situationDescriptions: {
     financialSituation: string;
@@ -48,6 +49,7 @@ const initialState: FormState = {
     employmentStatus: '',
     monthlyIncome: 0,
     housingStatus: '',
+    currency: '',
   },
   situationDescriptions: {
     financialSituation: '',
