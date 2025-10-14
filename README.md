@@ -36,88 +36,99 @@ This project simulates an AI-powered form assistant that helps users describe th
 ```bash
 git clone https://github.com/VidyasreeAtUnyk/social-support-portal.git
 cd social-support-portal
-2️⃣ Install Dependencies
+```
+
+### 2️⃣ Install Dependencies
+
 bash
 Copy code
 npm install
-3️⃣ Environment Variables
+
+### 3️⃣ Environment Variables
+
 Create a .env.local file in the root directory and add the following:
 
-bash
-Copy code
+```bash
 # OpenAI API Key (optional for production)
 OPENAI_API_KEY=your_openai_api_key_here
+```
+
 💡 If you don’t have an API key or have exceeded the quota, the app will automatically fall back to mock AI responses via mockAISuggestion.ts.
 
-4️⃣ Run the Development Server
-bash
-Copy code
+### 4️⃣ Run the Development Server
+
+```bash
 npm run dev
 Visit http://localhost:3000 to see your app running.
+```
 
-🧱 Build & Deployment
+### 🧱 Build & Deployment
+
 Build the Project
-bash
-Copy code
-npm run build
-Start in Production Mode
-bash
-Copy code
-npm start
-Deploy on Vercel
-This project is pre-configured for Vercel. Just run:
 
-bash
-Copy code
-vercel
-Or push your code to GitHub and connect it to your Vercel dashboard.
+```bash
+npm run build
+```
+
+Start in Production Mode
+
+```bash
+npm start
+```
+
+Deploy on Vercel
+This project is pre-configured for Vercel. Just push your code to GitHub and connect it to your Vercel dashboard.
 
 Current deployment:
 https://social-support-portal-iota.vercel.app
 
-🔑 Setting Up the OpenAI API Key
+### 🔑 Setting Up the OpenAI API Key
+
 Go to OpenAI API Keys
 
 Click Create new secret key
 
 Copy the key and add it to your .env.local file:
 
-bash
-Copy code
+```bash
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxx
+```
+
 Restart your dev server (npm run dev)
 
 If the API quota is exceeded, the app will gracefully fallback to mock AI responses to ensure the flow still works.
 
-🧹 Common Commands
-Command	Description
-npm run dev	Start dev server
-npm run build	Create production build
-npm start	Run production server
-npm run lint	Run ESLint
-vercel --prod	Deploy to Vercel Production
+### 🧹 Common Commands
 
-📦 Folder Structure
+Command Description
+npm run dev Start dev server
+npm run build Create production build
+npm start Run production server
+npm run lint Run ESLint
+vercel --prod Deploy to Vercel Production
+
+### 📦 Folder Structure
+
 pgsql
 Copy code
 ├── app/
-│   ├── components/
-│   ├── page.tsx
-│   └── layout.tsx
+│ ├── components/
+│ ├── page.tsx
+│ └── layout.tsx
 ├── lib/
-│   ├── designSystem/
-│   ├── hooks/
-│   └── store/
+│ ├── designSystem/
+│ ├── hooks/
+│ └── store/
 ├── services/
-│   └── ai/
-│       └── mockAISuggestion.ts
+│ └── ai/
+│ └── mockAISuggestion.ts
 ├── public/
 ├── .env.local
 ├── package.json
 └── README.md
-📜 Notes
+
+### 📜 Notes
+
 The AI “Help Me Write” feature currently uses a mock API due to limited OpenAI quota.
 
 Future updates may integrate the real OpenAI API via services/ai/getAISuggestion.ts.
-
-```
