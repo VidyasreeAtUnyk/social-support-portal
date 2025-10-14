@@ -107,26 +107,6 @@ npm start Run production server
 npm run lint Run ESLint
 vercel --prod Deploy to Vercel Production
 
-### 📦 Folder Structure
-
-pgsql
-Copy code
-├── app/
-│ ├── components/
-│ ├── page.tsx
-│ └── layout.tsx
-├── lib/
-│ ├── designSystem/
-│ ├── hooks/
-│ └── store/
-├── services/
-│ └── ai/
-│ └── mockAISuggestion.ts
-├── public/
-├── .env.local
-├── package.json
-└── README.md
-
 ### 📜 Notes
 
 The AI “Help Me Write” feature currently uses a mock API due to limited OpenAI quota.
