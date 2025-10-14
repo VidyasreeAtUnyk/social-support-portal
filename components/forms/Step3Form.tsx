@@ -4,7 +4,7 @@ import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { Box, Button, Grid } from '@mui/material';
-import { mockAISuggestion } from '@services/ai/mockAISuggestion';
+import { mockAISuggestion } from '@services/ai/mockAiSuggestion';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
