@@ -7,7 +7,9 @@
     "previous": "Previous",
     "saveDraft": "Save Draft",
     "cancel": "Cancel",
-    "clearForm": "Clear Form"
+    "clearForm": "Clear Form",
+    "generate": "Generate",
+    "generating": "Generating..."
   },
   "success": {
     "applicationSubmitted": "Application submitted successfully!",
@@ -21,5 +23,10 @@
   "select": "Select",
   "greeting": "Hello",
   "country": "Country",
-  "state": "State"
+  "state": "State",
+  "progress": "Progress",
+  "stepInfo": "Step {{currentStep}} of {{totalSteps}}",
+  "aiAssistantTitle": "AI Writing Assistant",
+  "helpDescription": "Describe what you need help with",
+  "aiPlaceholder": "e.g., I am unemployed with no income. Help me describe my financial hardship."
 }

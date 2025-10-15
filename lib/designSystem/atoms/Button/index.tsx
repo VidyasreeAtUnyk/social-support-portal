@@ -63,6 +63,15 @@ const StyledButton = styled(MuiButton)<CustomButtonProps>(({ theme, size, loadin
       opacity: 0,
     },
   }),
+  // fix icon/text overlap in RTL
+  '& .MuiButton-startIcon': {
+    marginLeft: theme.direction === 'rtl' ? 0 : undefined,
+    marginRight: theme.direction === 'rtl' ? 8 : undefined,
+  },
+  '& .MuiButton-endIcon': {
+    marginRight: theme.direction === 'rtl' ? 0 : undefined,
+    marginLeft: theme.direction === 'rtl' ? 8 : undefined,
+  },
 }));
 
 const LoadingSpinner = styled('div')(({ theme }) => ({
@@ -84,13 +93,13 @@ const LoadingSpinner = styled('div')(({ theme }) => ({
 
 /**
  * Button component with consistent styling and loading state
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="contained" color="primary" size="medium">
  *   Click me
  * </Button>
- * 
+ *
  * <Button loading variant="outlined">
  *   Loading...
  * </Button>
@@ -110,7 +119,7 @@ export const Button = forwardRef<HTMLButtonElement, CustomButtonProps>(
         {children}
       </StyledButton>
     );
-  }
+  },
 );
 
 Button.displayName = 'Button';

@@ -14,7 +14,8 @@ import {
   TextField,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface HelpMeWriteBoxProps extends BoxProps {
   /**
@@ -68,7 +69,7 @@ export interface HelpMeWriteBoxProps extends BoxProps {
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
     borderRadius: theme.shape.borderRadius * 2,
-    minWidth: 500,
+    // minWidth: 500,
     maxWidth: 700,
   },
 }));
@@ -159,6 +160,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     const [prompt, setPrompt] = useState('');
     const [suggestion, setSuggestion] = useState('');
     const [showSuggestion, setShowSuggestion] = useState(false);
+    const { t } = useTranslation(['common']);
 
     const handleRequestSuggestion = async () => {
       if (!onRequestSuggestion || !prompt.trim()) return;
@@ -197,6 +199,12 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       setShowSuggestion(false);
     };
 
+    useEffect(() => {
+      if (open) {
+        setPrompt(value || '');
+      }
+    }, [open, value]);
+
     return (
       <StyledDialog ref={ref} open={open} onClose={onClose} maxWidth="md" fullWidth {...props}>
         <DialogHeader>
@@ -205,7 +213,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
           </AIIconContainer>
           <Box sx={{ flex: 1 }}>
             <Typography variant="h6" color="textPrimary">
-              AI Writing Assistant
+              {t('common:aiAssistantTitle')}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {label}
@@ -227,8 +235,8 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             fullWidth
             multiline
             rows={4}
-            label="Describe what you need help with"
-            placeholder="e.g., I am unemployed with no income. Help me describe my financial hardship."
+            label={t('common:helpDescription')}
+            placeholder={t('common:aiPlaceholder')}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             sx={{ mb: 2 }}
@@ -241,7 +249,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             startIcon={loading ? <CircularProgress size={16} /> : <AIIcon />}
             sx={{ mb: 2 }}
           >
-            {loading ? 'Generating...' : 'Generate Suggestion'}
+            {loading ? t('common:actions.generating') : t('common:actions.generate')}
           </Button>
 
           {error && (

@@ -17,7 +17,19 @@
     "aiHelp": "Our AI assistant can help you write a clear and compelling description of your situation."
   },
   "errors": {
-    "financialSituationRequired": "Financial situation description is required",
-    "reasonForApplyingRequired": "Reason for applying is required"
+    "financialSituation": {
+      "required": "Financial situation description is required",
+      "min": "Please provide at least 50 characters describing your financial situation",
+      "max": "Description must be less than 1000 characters"
+    },
+    "employmentCircumstances": {
+      "min": "Please provide at least 20 characters describing your employment circumstances",
+      "max": "Description must be less than 1000 characters"
+    },
+    "reasonForApplying": {
+      "required": "Reason for applying is required",
+      "min": "Please provide at least 50 characters explaining why you are applying",
+      "max": "Description must be less than 1000 characters"
+    }
   }
 }

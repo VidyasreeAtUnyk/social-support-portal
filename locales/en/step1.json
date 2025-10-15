@@ -30,9 +30,45 @@
     "ca": "Canada"
   },
   "errors": {
-    "nameRequired": "Name is required",
-    "emailRequired": "Email is required",
-    "nationalIdRequired": "National ID is required",
-    "phoneRequired": "Phone number is required"
+    "name": {
+      "required": "Name is required",
+      "min": "Name must be at least 2 characters",
+      "max": "Name must be less than 100 characters"
+    },
+    "nationalId": {
+      "required": "National ID is required",
+      "alphaneumeric": "National ID must contain only letters and numbers"
+    },
+    "dob": {
+      "required": "Date of birth is required",
+      "future": "Date of birth cannot be in the future",
+      "min": "Date of birth must be after 1900"
+    },
+    "gender": {
+      "required": "Gender is required",
+      "invalid": "Please select a valid gender"
+    },
+    "address": {
+      "required": "Address is required",
+      "min": "Address must be at least 10 characters"
+    },
+    "city": {
+      "required": "City is required",
+      "min": "City must be at least 2 characters"
+    },
+    "state": {
+      "required": "State is required"
+    },
+    "country": {
+      "required": "Country is required"
+    },
+    "phone": {
+      "required": "Phone number is required",
+      "pattern": "Please enter a valid phone number"
+    },
+    "email": {
+      "required": "Email is required",
+      "invalid": "Please enter a valid email address"
+    }
   }
 }
