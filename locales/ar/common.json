@@ -7,7 +7,9 @@
     "previous": "السابق",
     "saveDraft": "حفظ المسودة",
     "cancel": "إلغاء",
-    "clearForm": "مسح النموذج"
+    "clearForm": "مسح النموذج",
+    "generate": "توليد",
+    "generating": "جاري التوليد..."
   },
   "success": {
     "applicationSubmitted": "تم إرسال الطلب بنجاح!",
@@ -21,5 +23,10 @@
   "select": "اختر",
   "greeting": "مرحبا",
   "country": "البلد",
-  "state": "الولاية"
+  "state": "الولاية",
+  "progress": "التقدم",
+  "stepInfo": "الخطوة {{currentStep}} من {{totalSteps}}",
+  "aiAssistantTitle": "مساعد الكتابة بالذكاء الاصطناعي",
+  "helpDescription": "صف ما تحتاج المساعدة فيه",
+  "aiPlaceholder": "مثال: أنا عاطل عن العمل ولا أملك دخلًا. ساعدني في وصف صعوبتي المالية."
 }

@@ -114,7 +114,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
                   />
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button size="small" onClick={() => openHelpBox(field.name)}>
-                      Help Me Write
+                      {t('common:helpMeWrite')}
                     </Button>
                   </Box>
                 </Box>

@@ -5,6 +5,7 @@ import { FormActions, StepProgressBar } from '@lib/designSystem/molecules';
 import { Box, BoxProps, Container, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ReactNode, forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface FormWizardTemplateProps extends BoxProps {
   /**
@@ -188,6 +189,8 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
     },
     ref,
   ) => {
+    const { t } = useTranslation(['common']);
+
     return (
       <StyledContainer ref={ref} maxWidth={maxWidth} variant={variant} {...props}>
         <FormHeader>
@@ -200,9 +203,7 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
             </Typography>
           )}
           {showStepNumbers && (
-            <StepIndicator>
-              Step {currentStep} of {totalSteps}
-            </StepIndicator>
+            <StepIndicator>{t('common:stepInfo', { currentStep, totalSteps })}</StepIndicator>
           )}
         </FormHeader>
 

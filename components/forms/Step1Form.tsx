@@ -36,21 +36,18 @@ export const Step1Form = ({ form }: Step1FormProps) => {
   }, [i18n.language, t]);
 
   // Load states when country changes
-  const selectedCountry = form.getValues('personalInfo.country');
+  const countryCode = form.getValues('personalInfo.country');
   useEffect(() => {
-    if (!selectedCountry) return setStates([]);
-
-    const countryCode = countries.find((c) => c.name === selectedCountry)?.code;
     if (!countryCode) return setStates([]);
 
     const loadedStates = (t(countryCode, { ns: 'states', returnObjects: true }) as string[]) || [];
     setStates(loadedStates);
-  }, [selectedCountry, countries, i18n.language, t]);
+  }, [countryCode, countries, i18n.language, t]);
 
   // Helper to resolve the correct data source
   const getOptions = (field: FieldConfig): FieldOption[] => {
     if (field.dynamicOptions === 'countries') {
-      return countries.map((c) => ({ value: c.name, label: c.name }));
+      return countries.map((c) => ({ value: c.code, label: c.name }));
     }
     if (field.dynamicOptions === 'states') {
       return states.map((s) => ({ value: s, label: s }));

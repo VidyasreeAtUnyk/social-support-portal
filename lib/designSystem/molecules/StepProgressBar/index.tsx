@@ -4,6 +4,7 @@ import { Typography } from '@lib/designSystem/atoms/Typography';
 import { Box, BoxProps, LinearProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface StepProgressBarProps extends BoxProps {
   /**
@@ -156,12 +157,13 @@ export const StepProgressBar = forwardRef<HTMLDivElement, StepProgressBarProps>(
   ) => {
     const progress = (100 / (totalSteps - 1)) * (currentStep - 1);
     const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
+    const { t } = useTranslation(['common']);
 
     return (
       <StyledProgressContainer ref={ref} variant={variant} {...props}>
         <ProgressHeader>
           <Typography variant="subtitle2" color="textPrimary">
-            Progress
+            {t('common:progress')}
           </Typography>
           {showPercentage && (
             <Typography variant="body2" color="textSecondary">
