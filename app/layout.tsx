@@ -1,5 +1,6 @@
 'use client';
 
+import { ToastProvider } from '@lib/context/ToastContext';
 import { Footer, Header } from '@lib/designSystem/';
 import i18n from '@lib/i18n/i18n';
 import { persistor, store } from '@lib/store';
@@ -57,9 +58,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PersistGate loading={null} persistor={persistor}>
               <I18nextProvider i18n={i18n}>
                 <ThemeProviderWrapper>
-                  <Header />
-                  {children}
-                  <Footer />
+                  <ToastProvider>
+                    <Header />
+                    {children}
+                    <Footer />
+                  </ToastProvider>
                 </ThemeProviderWrapper>
               </I18nextProvider>
             </PersistGate>

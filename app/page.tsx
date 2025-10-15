@@ -3,6 +3,7 @@
 import { Step1Form } from '@components/forms/Step1Form';
 import { Step2Form } from '@components/forms/Step2Form';
 import { Step3Form } from '@components/forms/Step3Form';
+import { useToast } from '@lib/context/ToastContext';
 import { FormWizardTemplate } from '@lib/designSystem/templates/FormWizardTemplate';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { setCurrentStep } from '@lib/store/formSlice';
@@ -15,6 +16,7 @@ export default function HomePage() {
   const dispatch = useAppDispatch();
   const currentStep = useAppSelector((state) => state.form.currentStep);
   const { t, i18n } = useTranslation(['common', 'step1', 'step2', 'step3']);
+  const { showToast } = useToast();
 
   const { form, validateStep, clearForm } = useSocialSupportForm();
   const totalSteps = 3;
@@ -54,15 +56,18 @@ export default function HomePage() {
       if (response.success) {
         // Show success message or toast
         console.log(response.message);
+        showToast({ message: `Form submitted successfully!`, severity: 'success' });
 
         // Clear form
         clearForm();
       } else {
         // Handle mock error (rare here)
         console.error('Submission failed:', response.message);
+        showToast({ message: `Submission failed!`, severity: 'error' });
       }
     } catch (error: any) {
       console.error('Submission error:', error.message || error);
+      showToast({ message: `Submission failed!`, severity: 'error' });
     }
   };
 

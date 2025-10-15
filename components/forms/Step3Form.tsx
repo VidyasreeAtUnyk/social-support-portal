@@ -1,10 +1,14 @@
 'use client';
 
+// import { AI_CONFIG } from '@lib/ai/aiConfig';
 import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3Form';
+// import { useToast } from '@lib/context/ToastContext';
 import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { Box, Button, Grid } from '@mui/material';
+// import { getAISuggestion } from '@services/ai';
+// import { AISuggestionResponse } from '@services/ai/types';
 import { mockAISuggestion } from '@services/ai/mockAiSuggestion';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +20,7 @@ interface Step3FormProps {
 export const Step3Form = ({ form }: Step3FormProps) => {
   const { t, i18n } = useTranslation(['step3', 'common']);
   const isRTL = i18n.language === 'ar';
+  // const { showToast } = useToast();
 
   const [helpBoxOpen, setHelpBoxOpen] = useState<{
     financialSituation: boolean;
@@ -45,6 +50,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
     setHelpBoxOpen((prev) => ({ ...prev, [field]: false }));
   };
 
+  // A call to mack API requests when api key times out
   const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen) => {
     try {
       setLoadingField((prev) => ({ ...prev, [field]: true }));
@@ -58,9 +64,9 @@ export const Step3Form = ({ form }: Step3FormProps) => {
     }
   };
 
-  // const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen) => {
+  // const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen, prompt: string) => {
   //   setLoadingField((prev) => ({ ...prev, [field]: true }));
-  //   const prompt = form.getValues(`situationDescriptions.${field}`);
+
   //   try {
   //     const data: AISuggestionResponse = await getAISuggestion({
   //       fieldKey: field,
@@ -71,6 +77,8 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   //     return data.choices?.[0]?.message?.content || '';
   //   } catch (err: any) {
   //     // setSuggestion(`Error: ${err.message}`);
+  //     showToast({ message: `Error: ${err.message}`, severity: 'error' });
+  //     throw err;
   //   } finally {
   //     setLoadingField((prev) => ({ ...prev, [field]: false }));
   //   }
@@ -127,7 +135,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
               value={form.getValues(`situationDescriptions.${field.name}`)}
               loading={loadingField[field.name]}
               onClose={() => closeHelpBox(field.name)}
-              onRequestSuggestion={() => handleRequestSuggestion(field.name)}
+              onRequestSuggestion={(prompt) => handleRequestSuggestion(field.name, prompt)}
               onAcceptSuggestion={(val) =>
                 form.setValue(`situationDescriptions.${field.name}`, val, {
                   shouldValidate: true,

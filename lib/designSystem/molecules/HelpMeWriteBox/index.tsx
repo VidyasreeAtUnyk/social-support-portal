@@ -14,7 +14,7 @@ import {
   TextField,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface HelpMeWriteBoxProps extends BoxProps {
@@ -69,7 +69,7 @@ export interface HelpMeWriteBoxProps extends BoxProps {
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
     borderRadius: theme.shape.borderRadius * 2,
-    minWidth: 500,
+    // minWidth: 500,
     maxWidth: 700,
   },
 }));
@@ -198,6 +198,12 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       }
       setShowSuggestion(false);
     };
+
+    useEffect(() => {
+      if (open) {
+        setPrompt(value || '');
+      }
+    }, [open, value]);
 
     return (
       <StyledDialog ref={ref} open={open} onClose={onClose} maxWidth="md" fullWidth {...props}>
