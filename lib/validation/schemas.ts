@@ -5,91 +5,100 @@ export const personalInfoSchema = yup.object({
   name: yup
     .string()
     .transform((value) => (value === '' ? undefined : value))
-    .required('Name is required')
-    .min(2, 'Name must be at least 2 characters')
-    .max(100, 'Name must be less than 100 characters'),
+    .required('errors.name.required')
+    .min(2, 'errors.name.min')
+    .max(100, 'errors.name.max'),
+
   nationalId: yup
     .string()
     .transform((value) => (value === '' ? undefined : value))
-    .required('National ID is required')
-    .matches(/^[A-Za-z0-9]+$/, 'National ID must contain only letters and numbers'),
+    .required('errors.nationalId.required')
+    .matches(/^[A-Za-z0-9]+$/, 'errors.nationalId.alphaneumeric'),
+
   dob: yup
     .date()
-    .transform((value, originalValue) => {
-      // If the original value is empty string, treat it as undefined
-      return originalValue === '' ? undefined : value;
-    })
-    .required('Date of birth is required')
-    .max(new Date(), 'Date of birth cannot be in the future')
-    .min(new Date(1900, 0, 1), 'Date of birth must be after 1900'),
+    .transform((value, originalValue) => (originalValue === '' ? undefined : value))
+    .required('errors.dob.required')
+    .max(new Date(), 'errors.dob.future')
+    .min(new Date(1900, 0, 1), 'errors.dob.min'),
+
   gender: yup
     .string()
-    .required('Gender is required')
-    .oneOf(['male', 'female', 'other'], 'Please select a valid gender'),
-  address: yup
-    .string()
-    .required('Address is required')
-    .min(10, 'Address must be at least 10 characters'),
-  city: yup.string().required('City is required').min(2, 'City must be at least 2 characters'),
-  state: yup.string().required('State is required'),
-  country: yup.string().required('Country is required'),
+    .required('errors.gender.required')
+    .oneOf(['male', 'female', 'other'], 'errors.gender.invalid'),
+
+  address: yup.string().required('errors.address.required').min(10, 'errors.address.min'),
+
+  city: yup.string().required('errors.city.required').min(2, 'errors.city.min'),
+
+  state: yup.string().required('errors.state.required'),
+
+  country: yup.string().required('errors.country.required'),
+
   phone: yup
     .string()
-    .required('Phone number is required')
-    .matches(/^[\+]?[1-9][\d]{0,15}$/, 'Please enter a valid phone number'),
-  email: yup.string().required('Email is required').email('Please enter a valid email address'),
+    .required('errors.phone.required')
+    .matches(/^[\+]?[1-9][\d]{0,15}$/, 'errors.phone.pattern'),
+
+  email: yup.string().required('errors.email.required').email('errors.email.invalid'),
 });
 
 // Step 2: Family & Financial Information Validation Schema
 export const familyInfoSchema = yup.object({
   maritalStatus: yup
     .string()
-    .required('Marital status is required')
-    .oneOf(['single', 'married', 'divorced', 'widowed'], 'Please select a valid marital status'),
+    .required('errors.maritalStatus.required')
+    .oneOf(['single', 'married', 'divorced', 'widowed'], 'errors.maritalStatus.invalid'),
+
   dependents: yup
     .number()
-    .required('Number of dependents is required')
-    .min(0, 'Number of dependents cannot be negative')
-    .max(20, 'Number of dependents cannot exceed 20')
-    .integer('Number of dependents must be a whole number'),
+    .transform((value, originalValue) => (originalValue === '' ? undefined : value))
+    .required('errors.dependents.required')
+    .min(0, 'errors.dependents.min')
+    .max(20, 'errors.dependents.max')
+    .integer('errors.dependents.integer'),
+
   employmentStatus: yup
     .string()
-    .required('Employment status is required')
+    .required('errors.employmentStatus.required')
     .oneOf(
       ['employed', 'unemployed', 'self-employed', 'retired', 'student'],
-      'Please select a valid employment status',
+      'errors.employmentStatus.invalid',
     ),
-  currency: yup.string().required('Currency is required'),
+
+  currency: yup.string().required('errors.currency.required'),
+
   monthlyIncome: yup
     .number()
-    .required('Monthly income is required')
-    .min(0, 'Monthly income cannot be negative')
-    .max(1000000, 'Monthly income cannot exceed $1,000,000'),
+    .transform((value, originalValue) => (originalValue === '' ? undefined : value))
+    .required('errors.monthlyIncome.required')
+    .min(0, 'errors.monthlyIncome.min')
+    .max(1000000, 'errors.monthlyIncome.max'),
+
   housingStatus: yup
     .string()
-    .required('Housing status is required')
-    .oneOf(
-      ['owned', 'rented', 'living-with-family', 'homeless'],
-      'Please select a valid housing status',
-    ),
+    .required('errors.housingStatus.required')
+    .oneOf(['owned', 'rented', 'living-with-family', 'homeless'], 'errors.housingStatus.invalid'),
 });
 
 // Step 3: Situation Descriptions Validation Schema
 export const situationDescriptionsSchema = yup.object({
   financialSituation: yup
     .string()
-    .required('Financial situation description is required')
-    .min(50, 'Please provide at least 50 characters describing your financial situation')
-    .max(1000, 'Description must be less than 1000 characters'),
+    .required('errors.financialSituation.required')
+    .min(50, 'errors.financialSituation.min')
+    .max(1000, 'errors.financialSituation.max'),
+
   employmentCircumstances: yup
     .string()
-    .min(20, 'Please provide at least 20 characters describing your employment circumstances')
-    .max(1000, 'Description must be less than 1000 characters'),
+    .min(20, 'errors.employmentCircumstances.min')
+    .max(1000, 'errors.employmentCircumstances.max'),
+
   reasonForApplying: yup
     .string()
-    .required('Reason for applying is required')
-    .min(50, 'Please provide at least 50 characters explaining why you are applying')
-    .max(1000, 'Description must be less than 1000 characters'),
+    .required('errors.reasonForApplying.required')
+    .min(50, 'errors.reasonForApplying.min')
+    .max(1000, 'errors.reasonForApplying.max'),
 });
 
 // Combined form schema for final validation

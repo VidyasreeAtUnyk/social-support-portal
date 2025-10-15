@@ -3,7 +3,7 @@
 import { Typography } from '@lib/designSystem/atoms/Typography';
 import { Box, BoxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React, { ReactNode, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 
 export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> extends BoxProps {
@@ -23,7 +23,14 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
   /**
    * Field content/input component
    */
-  children: ReactNode;
+  children:
+    | React.ReactNode
+    | ((fieldProps: {
+        value?: any;
+        onChange?: (...args: any) => void;
+        error?: boolean;
+        helperText?: string;
+      }) => React.ReactNode);
   /**
    * Field layout direction
    * @default 'column'
@@ -145,10 +152,10 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps<any>>(
             name={name}
             render={({ field, fieldState }) => (
               <Box className="form-field-content">
-                {React.cloneElement(children as React.ReactElement, {
+                {children({
                   ...field,
                   error: !!fieldState.error,
-                  helperText: fieldState.error?.message || undefined,
+                  helperText: fieldState.error?.message,
                 })}
               </Box>
             )}

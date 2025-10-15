@@ -28,7 +28,31 @@
     "homeless": "Homeless"
   },
   "errors": {
-    "employmentStatusRequired": "Employment status is required",
-    "monthlyIncomeInvalid": "Monthly income must be a valid number"
+    "maritalStatus": {
+      "required": "Marital status is required",
+      "invalid": "Please select a valid marital status"
+    },
+    "dependents": {
+      "required": "Number of dependents is required",
+      "min": "Number of dependents cannot be negative",
+      "max": "Number of dependents cannot exceed 20",
+      "integer": "Number of dependents must be a whole number"
+    },
+    "employmentStatus": {
+      "required": "Employment status is required",
+      "invalid": "Please select a valid employment status"
+    },
+    "currency": {
+      "required": "Currency is required"
+    },
+    "monthlyIncome": {
+      "required": "Monthly income is required",
+      "min": "Monthly income cannot be negative",
+      "max": "Monthly income cannot exceed $1,000,000"
+    },
+    "housingStatus": {
+      "required": "Housing status is required",
+      "invalid": "Please select a valid housing status"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
@@ -38,6 +39,7 @@ export interface FormData {
 export const useSocialSupportForm = () => {
   const dispatch = useDispatch();
   const formState = useSelector((state: RootState) => state.form);
+  const { t } = useTranslation(['step1', 'step2', 'step3', 'common']);
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -87,13 +89,16 @@ export const useSocialSupportForm = () => {
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err) => {
           if (err.path) {
-            form.setError(
-              `${['personalInfo', 'familyInfo', 'situationDescriptions'][step - 1]}.${err.path}` as any,
-              {
-                type: 'manual',
-                message: err.message,
-              },
-            );
+            // Determine current step object prefix
+            const prefix = ['personalInfo', 'familyInfo', 'situationDescriptions'][step - 1];
+
+            // Translate the message using `t`
+            const translatedMessage = t(err.message as string, { ns: 'step' + step }) || '';
+
+            form.setError(`${prefix}.${err.path}` as any, {
+              type: 'manual',
+              message: translatedMessage,
+            });
           }
         });
       }

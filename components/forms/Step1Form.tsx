@@ -1,5 +1,6 @@
 'use client';
 
+import { FieldConfig, FieldOption, personalInfoForm } from '@lib/content/step1Form';
 import { FormField, Input, Select } from '@lib/designSystem';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { Box, Grid, MenuItem } from '@mui/material';
@@ -20,6 +21,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
   const { t, i18n } = useTranslation(['step1', 'countries', 'states']);
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [states, setStates] = useState<string[]>([]);
+  const watchedValues = form.watch();
 
   const isRTL = i18n.language === 'ar';
 
@@ -45,145 +47,81 @@ export const Step1Form = ({ form }: Step1FormProps) => {
     setStates(loadedStates);
   }, [selectedCountry, countries, i18n.language, t]);
 
+  // Helper to resolve the correct data source
+  const getOptions = (field: FieldConfig): FieldOption[] => {
+    if (field.dynamicOptions === 'countries') {
+      return countries.map((c) => ({ value: c.name, label: c.name }));
+    }
+    if (field.dynamicOptions === 'states') {
+      return states.map((s) => ({ value: s, label: s }));
+    }
+    return field.options || [];
+  };
+
+  const isDisabled = ({
+    dependsOn,
+    watchedValues,
+    formName,
+  }: {
+    dependsOn?: string;
+    watchedValues: Record<string, any>;
+    formName: string;
+  }): boolean => {
+    return !!dependsOn && !watchedValues[formName][dependsOn];
+  };
+
   return (
     <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Grid container spacing={2} direction="column">
-        {/* Row 1: Name | National ID */}
-        <Grid container item spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
+      <Grid
+        container
+        rowSpacing={{ xs: 1, sm: 1 }}
+        columnSpacing={{ xs: 1, sm: 2 }}
+        direction="row"
+        justifyContent="center"
+      >
+        {personalInfoForm.map((field, index) => (
+          <Grid item xs={12} md={6} key={field.name}>
             <FormField
-              label={t('fields.name', { ns: 'step1' })}
-              required
+              label={t(field.label, { ns: 'step1' })}
+              required={field.required}
               control={form.control}
-              name="personalInfo.name"
+              name={field.name}
             >
-              <Input fullWidth placeholder={t('placeholders.name', { ns: 'step1' })} />
+              {({ value, onChange, error, helperText }) =>
+                field.type === 'select' ? (
+                  <Select
+                    fullWidth
+                    value={value ?? ''}
+                    onChange={onChange}
+                    error={error}
+                    helperText={helperText || ' '} // to maintain height
+                    disabled={isDisabled({
+                      dependsOn: field.dependsOn,
+                      watchedValues,
+                      formName: 'personalInfo',
+                    })}
+                  >
+                    {getOptions(field).map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {t(opt.label, { ns: 'step1' })}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ) : (
+                  <Input
+                    fullWidth
+                    type={field.type || 'text'}
+                    value={value ?? ''}
+                    onChange={onChange}
+                    error={error}
+                    helperText={helperText || ' '} // to maintain height
+                    placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                  />
+                )
+              }
             </FormField>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.nationalId', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.nationalId"
-            >
-              <Input fullWidth placeholder={t('placeholders.nationalId', { ns: 'step1' })} />
-            </FormField>
-          </Grid>
-        </Grid>
-
-        {/* Row 2: Gender | DOB */}
-        <Grid container item spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.gender', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.gender"
-            >
-              <Select fullWidth>
-                <MenuItem value="male">{t('options.male', { ns: 'step1' })}</MenuItem>
-                <MenuItem value="female">{t('options.female', { ns: 'step1' })}</MenuItem>
-                <MenuItem value="other">{t('options.other', { ns: 'step1' })}</MenuItem>
-              </Select>
-            </FormField>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.dob', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.dob"
-            >
-              <Input fullWidth type="date" />
-            </FormField>
-          </Grid>
-        </Grid>
-
-        {/* Row 3: Address | City */}
-        <Grid container item spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.address', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.address"
-            >
-              <Input fullWidth placeholder={t('placeholders.address', { ns: 'step1' })} />
-            </FormField>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.city', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.city"
-            >
-              <Input fullWidth placeholder={t('placeholders.city', { ns: 'step1' })} />
-            </FormField>
-          </Grid>
-        </Grid>
-
-        {/* Row 4: State | Country */}
-        <Grid container item spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.state', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.state"
-            >
-              <Select fullWidth disabled={!selectedCountry}>
-                <MenuItem value="">{t('select')}</MenuItem>
-                {states.map((state) => (
-                  <MenuItem key={state} value={state}>
-                    {state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormField>
-          </Grid>
-          <Grid item xs={12} md={6} justifyContent="center">
-            <FormField
-              label={t('fields.country', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.country"
-            >
-              <Select fullWidth>
-                {countries.map((c) => (
-                  <MenuItem key={c.code} value={c.name}>
-                    {c.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormField>
-          </Grid>
-        </Grid>
-
-        {/* Row 5: Email | Phone */}
-        <Grid container item spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.email', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.email"
-            >
-              <Input fullWidth placeholder={t('placeholders.email', { ns: 'step1' })} />
-            </FormField>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormField
-              label={t('fields.phone', { ns: 'step1' })}
-              required
-              control={form.control}
-              name="personalInfo.phone"
-            >
-              <Input fullWidth placeholder={t('placeholders.phone', { ns: 'step1' })} />
-            </FormField>
-          </Grid>
-        </Grid>
+        ))}
       </Grid>
     </Box>
   );

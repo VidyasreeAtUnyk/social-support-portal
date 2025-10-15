@@ -1,5 +1,6 @@
 'use client';
 
+import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3Form';
 import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
@@ -93,47 +94,51 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   return (
     <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
       <Grid container spacing={2} direction="column">
-        {fields.map((field) => (
-          <Grid item xs={12} key={field}>
+        {situationDescriptionsForm.map((field: Step3FieldConfig) => (
+          <Grid item xs={12} key={field.name}>
             <FormField
-              label={t(`fields.${field}`, { ns: 'step3' })}
-              required={field !== 'employmentCircumstances'}
+              label={t(field.label, { ns: 'step3' })}
+              required={field.required}
               control={form.control}
-              name={`situationDescriptions.${field}`}
+              name={`situationDescriptions.${field.name}`}
             >
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextArea
-                  rows={6}
-                  placeholder={t(`placeholders.${field}`, { ns: 'step3' })}
-                  value={form.getValues(`situationDescriptions.${field}`)}
-                  onChange={(e) =>
-                    form.setValue(`situationDescriptions.${field}`, e.target.value, {
-                      shouldValidate: true,
-                    })
-                  }
-                />
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button size="small" onClick={() => openHelpBox(field)}>
-                    Help Me Write
-                  </Button>
+              {({ value, onChange, error, helperText }) => (
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <TextArea
+                    rows={6}
+                    value={value}
+                    onChange={onChange}
+                    error={error}
+                    helperText={helperText || ' '} // to maintain height
+                    placeholder={t(field.placeholder, { ns: 'step3' })}
+                  />
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button size="small" onClick={() => openHelpBox(field.name)}>
+                      Help Me Write
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
+              )}
             </FormField>
 
             <HelpMeWriteBox
-              label={t(`fields.${field}`, { ns: 'step3' })}
-              open={helpBoxOpen[field]}
-              value={form.getValues(`situationDescriptions.${field}`)}
-              loading={loadingField[field]}
-              onClose={() => closeHelpBox(field)}
-              onRequestSuggestion={() => handleRequestSuggestion(field)}
+              label={t(field.label, { ns: 'step3' })}
+              open={helpBoxOpen[field.name]}
+              value={form.getValues(`situationDescriptions.${field.name}`)}
+              loading={loadingField[field.name]}
+              onClose={() => closeHelpBox(field.name)}
+              onRequestSuggestion={() => handleRequestSuggestion(field.name)}
               onAcceptSuggestion={(val) =>
-                form.setValue(`situationDescriptions.${field}`, val, { shouldValidate: true })
+                form.setValue(`situationDescriptions.${field.name}`, val, {
+                  shouldValidate: true,
+                })
               }
               onChange={(val) =>
-                form.setValue(`situationDescriptions.${field}`, val, { shouldValidate: true })
+                form.setValue(`situationDescriptions.${field.name}`, val, {
+                  shouldValidate: true,
+                })
               }
-              description={t(`descriptions.${field}`, {
+              description={t(field.description || '', {
                 ns: 'step3',
                 defaultValue: '',
               })}
