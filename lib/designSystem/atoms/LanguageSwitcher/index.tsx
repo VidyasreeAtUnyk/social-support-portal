@@ -10,11 +10,12 @@ export const LanguageSwitcher = () => {
     i18n.changeLanguage(e.target.value);
   };
 
+  const effectiveValue = i18n.language.includes('en') ? 'en' : i18n.language;
+
   return (
-    <Select value={i18n.language} onChange={handleChange} size="small" sx={{ minWidth: 100 }}>
+    <Select value={effectiveValue} onChange={handleChange} size="small" sx={{ minWidth: 100 }}>
       <MenuItem value="en">English</MenuItem>
       <MenuItem value="ar">Arabic</MenuItem>
-      <MenuItem value="hi">Hindi</MenuItem>
     </Select>
   );
 };

@@ -45,7 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const isRTL = i18n.language === 'ar';
 
   return (
-    <html lang={ready ? i18n.language : 'en'} dir={ready && isRTL ? 'rtl' : 'ltr'}>
+    <html
+      lang={ready ? (i18n.language.includes('en') ? 'en' : i18n.language) : 'en'}
+      dir={ready && isRTL ? 'rtl' : 'ltr'}
+    >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {!ready ? (
           <div style={{ opacity: 0 }}>Loading...</div>
