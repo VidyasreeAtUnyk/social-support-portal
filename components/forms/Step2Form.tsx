@@ -40,10 +40,7 @@ export const Step2Form = ({ form }: Step2FormProps) => {
         {familyInfoForm.map((field) => (
           <Box
             key={field.name}
-            sx={{
-              flex: field.type === 'number' ? '1 1 150px' : '1 1 300px',
-              minWidth: field.type === 'number' ? '150px' : '300px',
-            }}
+            sx={{ flex: '1 1 300px', minWidth: '300px' }}
           >
             <FormField
               label={t(field.label, { ns: 'step2' })}
