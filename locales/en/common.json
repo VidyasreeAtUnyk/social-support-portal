@@ -28,5 +28,29 @@
   "stepInfo": "Step {{currentStep}} of {{totalSteps}}",
   "aiAssistantTitle": "AI Writing Assistant",
   "helpDescription": "Describe what you need help with",
-  "aiPlaceholder": "e.g., I am unemployed with no income. Help me describe my financial hardship."
+  "aiPlaceholder": "e.g., I am unemployed with no income. Help me describe my financial hardship.",
+  "countries": {
+    "uae": "United Arab Emirates",
+    "india": "India",
+    "usa": "United States",
+    "uk": "United Kingdom",
+    "saudi": "Saudi Arabia",
+    "kuwait": "Kuwait",
+    "qatar": "Qatar",
+    "bahrain": "Bahrain",
+    "oman": "Oman",
+    "jordan": "Jordan",
+    "lebanon": "Lebanon",
+    "egypt": "Egypt"
+  },
+  "phone": {
+    "placeholder": "Enter your phone number",
+    "errors": {
+      "invalidFormat": "Invalid phone number format",
+      "notValid": "Phone number is not valid",
+      "mobileRequired": "Mobile number required",
+      "parsingError": "Error parsing phone number",
+      "countryNotAllowed": "Phone number from {{country}} is not allowed"
+    }
+  }
 }

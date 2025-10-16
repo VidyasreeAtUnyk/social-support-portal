@@ -10,8 +10,9 @@ interface FormState {
     address: string;
     city: string;
     state: string;
-    country: string;
+    country: string; // Address country
     phone: string;
+    phoneCountry: string; // Phone number country
     email: string;
   };
   familyInfo: {
@@ -41,6 +42,7 @@ const initialState: FormState = {
     state: '',
     country: '',
     phone: '',
+    phoneCountry: '', // Default phone country
     email: '',
   },
   familyInfo: {

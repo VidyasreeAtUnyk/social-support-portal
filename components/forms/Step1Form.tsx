@@ -1,7 +1,9 @@
 'use client';
 
+import { DEFAULT_ALLOWED_COUNTRIES, DEFAULT_PHONE_COUNTRY } from '@lib/config/countries';
 import { FieldConfig, FieldOption, personalInfoForm } from '@lib/content/step1Form';
 import { FormField, Input, Select } from '@lib/designSystem';
+import { PhoneInput } from '@lib/designSystem/atoms/PhoneInput';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { Box, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -101,6 +103,27 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                       </MenuItem>
                     ))}
                   </Select>
+                ) : field.type === 'tel' ? (
+                  <PhoneInput
+                    fullWidth
+                    value={(value as string) || ''}
+                    selectedCountry={form.getValues('personalInfo.phoneCountry') || DEFAULT_PHONE_COUNTRY}
+                    onChange={(phoneValue, validation, country) => {
+                      onChange?.(phoneValue);
+                      // Store the selected phone country separately from address country
+                      if (country) {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        form.setValue('personalInfo.phoneCountry' as any, country);
+                      }
+                    }}
+                    error={error ? t('phone.errors.notValid', { ns: 'common' }) : undefined}
+                    helperText={helperText || ' '} // to maintain height
+                    placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                    defaultCountry={DEFAULT_PHONE_COUNTRY}
+                    showCountrySelector={true}
+                    formatOnChange={true}
+                    allowedCountries={DEFAULT_ALLOWED_COUNTRIES}
+                  />
                 ) : (
                   <Input
                     fullWidth
