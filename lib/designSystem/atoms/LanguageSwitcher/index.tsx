@@ -1,13 +1,13 @@
 'use client';
 
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const handleChange = (e: any) => {
-    i18n.changeLanguage(e.target.value);
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    i18n.changeLanguage(e.target.value as string);
   };
 
   const effectiveValue = i18n.language.includes('en') ? 'en' : i18n.language;

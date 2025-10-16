@@ -48,7 +48,11 @@ export interface FormStepProps extends BoxProps {
   variant?: 'default' | 'compact' | 'detailed';
 }
 
-const StyledFormStep = styled(Box)<FormStepProps>(({ theme, variant = 'default' }) => ({
+interface StyledFormStepProps {
+  variant?: 'default' | 'compact' | 'detailed';
+}
+
+const StyledFormStep = styled(Box)<StyledFormStepProps>(({ theme, variant = 'default' }) => ({
   width: '100%',
   ...(variant === 'compact' && {
     padding: theme.spacing(2),
@@ -61,7 +65,13 @@ const StyledFormStep = styled(Box)<FormStepProps>(({ theme, variant = 'default' 
   }),
 }));
 
-const StepHeader = styled(Box)<FormStepProps>(({ theme, active, completed, disabled }) => ({
+interface StepHeaderProps {
+  active?: boolean;
+  completed?: boolean;
+  disabled?: boolean;
+}
+
+const StepHeader = styled(Box)<StepHeaderProps>(({ theme, active, completed, disabled }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
@@ -83,7 +93,12 @@ const StepHeader = styled(Box)<FormStepProps>(({ theme, active, completed, disab
   }),
 }));
 
-const StepNumber = styled(Box)<FormStepProps>(({ theme, active, completed }) => ({
+interface StepNumberProps {
+  active?: boolean;
+  completed?: boolean;
+}
+
+const StepNumber = styled(Box)<StepNumberProps>(({ theme, active, completed }) => ({
   width: 40,
   height: 40,
   borderRadius: '50%',

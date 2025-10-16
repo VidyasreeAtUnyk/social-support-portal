@@ -16,11 +16,14 @@ export const personalInfoSchema = yup.object({
     .matches(/^[A-Za-z0-9]+$/, 'errors.nationalId.alphaneumeric'),
 
   dob: yup
-    .date()
-    .transform((value, originalValue) => (originalValue === '' ? undefined : value))
+    .string()
+    .transform((value) => (value === '' ? undefined : value))
     .required('errors.dob.required')
-    .max(new Date(), 'errors.dob.future')
-    .min(new Date(1900, 0, 1), 'errors.dob.min'),
+    .test('is-valid-date', 'errors.dob.invalid', (value) => {
+      if (!value) return false;
+      const date = new Date(value);
+      return !isNaN(date.getTime()) && date <= new Date() && date >= new Date(1900, 0, 1);
+    }),
 
   gender: yup
     .string()

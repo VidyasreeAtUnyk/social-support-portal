@@ -26,11 +26,10 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(response.data);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      (error as { response?: { data?: unknown } }).response?.data || 'Something went wrong';
     console.error('OpenAI API Error:', error);
-    return NextResponse.json(
-      { error: error?.response?.data || 'Something went wrong' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

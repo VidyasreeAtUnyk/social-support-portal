@@ -1,6 +1,11 @@
 import { AISuggestionConfig, FIELD_PROMPTS, FieldKey } from '@lib/ai/aiConfig';
+import { ChatMessage } from './types';
 
-export const buildAIMessages = (fieldKey: FieldKey, prompt: string, config: AISuggestionConfig) => {
+export const buildAIMessages = (
+  fieldKey: FieldKey,
+  prompt: string,
+  config: AISuggestionConfig,
+): ChatMessage[] => {
   const sanitizedPrompt = prompt.replace(/<[^>]+>/g, '');
   const fieldLabel = FIELD_PROMPTS[fieldKey];
 

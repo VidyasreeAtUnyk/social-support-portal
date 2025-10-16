@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Alert,
-  Slide,
-  SlideProps,
-  Snackbar,
-  SnackbarProps
-} from '@mui/material';
+import { Alert, Slide, SlideProps, Snackbar, SnackbarProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef, useEffect, useState } from 'react';
 
@@ -70,7 +64,7 @@ function SlideTransition(props: SlideProps) {
 
 /**
  * Toast component for displaying notifications
- * 
+ *
  * @example
  * ```tsx
  * <Toast
@@ -79,7 +73,7 @@ function SlideTransition(props: SlideProps) {
  *   severity="success"
  *   onClose={() => setShowToast(false)}
  * />
- * 
+ *
  * <Toast
  *   open={showError}
  *   message="Something went wrong"
@@ -89,16 +83,19 @@ function SlideTransition(props: SlideProps) {
  * ```
  */
 export const Toast = forwardRef<HTMLDivElement, CustomToastProps>(
-  ({ 
-    message,
-    severity = 'info',
-    open = false,
-    autoHideDuration = 6000,
-    anchorOrigin = { vertical: 'bottom', horizontal: 'right' },
-    dismissible = true,
-    onClose,
-    ...props 
-  }, ref) => {
+  (
+    {
+      message,
+      severity = 'info',
+      open = false,
+      autoHideDuration = 6000,
+      anchorOrigin = { vertical: 'bottom', horizontal: 'right' },
+      dismissible = true,
+      onClose,
+      ...props
+    },
+    ref,
+  ) => {
     const [isOpen, setIsOpen] = useState(open);
 
     useEffect(() => {
@@ -129,7 +126,7 @@ export const Toast = forwardRef<HTMLDivElement, CustomToastProps>(
         </StyledAlert>
       </StyledSnackbar>
     );
-  }
+  },
 );
 
 Toast.displayName = 'Toast';

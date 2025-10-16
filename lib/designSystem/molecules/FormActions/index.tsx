@@ -79,7 +79,13 @@ export interface FormActionsProps extends BoxProps {
   showDivider?: boolean;
 }
 
-const StyledFormActions = styled(Box)<FormActionsProps>(({ theme, showDivider = true }) => ({
+interface StyledFormActionsProps {
+  showDivider?: boolean;
+}
+
+const StyledFormActions = styled(Box, {
+  shouldForwardProp: (prop) => !['showDivider'].includes(prop as string),
+})<StyledFormActionsProps>(({ theme, showDivider = true }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),

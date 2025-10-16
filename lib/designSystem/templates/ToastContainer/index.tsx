@@ -47,12 +47,12 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
       dismissible: true,
       ...toast,
     };
-    
-    setToasts(prev => [...prev, newToast]);
+
+    setToasts((prev) => [...prev, newToast]);
   }, []);
 
   const hideToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
   const clearAllToasts = useCallback(() => {
@@ -109,7 +109,13 @@ export interface ToastContainerProps extends BoxProps {
    * Toast container position
    * @default 'top-right'
    */
-  position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+  toastPosition?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right';
   /**
    * Maximum number of toasts to show
    * @default 5
@@ -117,48 +123,50 @@ export interface ToastContainerProps extends BoxProps {
   maxToasts?: number;
 }
 
-const PositionedToastContainer = styled(Box)<ToastContainerProps>(({ theme, position = 'top-right' }) => ({
-  position: 'fixed',
-  zIndex: theme.zIndex.snackbar,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(1),
-  maxWidth: 400,
-  pointerEvents: 'none',
-  '& > *': {
-    pointerEvents: 'auto',
-  },
-  ...(position === 'top-left' && {
-    top: theme.spacing(2),
-    left: theme.spacing(2),
+const PositionedToastContainer = styled(Box)<ToastContainerProps>(
+  ({ theme, toastPosition = 'top-right' }) => ({
+    position: 'fixed',
+    zIndex: theme.zIndex.snackbar,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    maxWidth: 400,
+    pointerEvents: 'none',
+    '& > *': {
+      pointerEvents: 'auto',
+    },
+    ...(toastPosition === 'top-left' && {
+      top: theme.spacing(2),
+      left: theme.spacing(2),
+    }),
+    ...(toastPosition === 'top-center' && {
+      top: theme.spacing(2),
+      left: '50%',
+      transform: 'translateX(-50%)',
+    }),
+    ...(toastPosition === 'top-right' && {
+      top: theme.spacing(2),
+      right: theme.spacing(2),
+    }),
+    ...(toastPosition === 'bottom-left' && {
+      bottom: theme.spacing(2),
+      left: theme.spacing(2),
+    }),
+    ...(toastPosition === 'bottom-center' && {
+      bottom: theme.spacing(2),
+      left: '50%',
+      transform: 'translateX(-50%)',
+    }),
+    ...(toastPosition === 'bottom-right' && {
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    }),
   }),
-  ...(position === 'top-center' && {
-    top: theme.spacing(2),
-    left: '50%',
-    transform: 'translateX(-50%)',
-  }),
-  ...(position === 'top-right' && {
-    top: theme.spacing(2),
-    right: theme.spacing(2),
-  }),
-  ...(position === 'bottom-left' && {
-    bottom: theme.spacing(2),
-    left: theme.spacing(2),
-  }),
-  ...(position === 'bottom-center' && {
-    bottom: theme.spacing(2),
-    left: '50%',
-    transform: 'translateX(-50%)',
-  }),
-  ...(position === 'bottom-right' && {
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  }),
-}));
+);
 
 /**
  * ToastContainer component for managing multiple toast notifications
- * 
+ *
  * @example
  * ```tsx
  * <ToastContainerComponent
@@ -167,7 +175,7 @@ const PositionedToastContainer = styled(Box)<ToastContainerProps>(({ theme, posi
  *   position="top-right"
  *   maxToasts={3}
  * />
- * 
+ *
  * // With provider
  * <ToastProvider>
  *   <App />
@@ -175,21 +183,11 @@ const PositionedToastContainer = styled(Box)<ToastContainerProps>(({ theme, posi
  * ```
  */
 export const ToastContainerComponent = forwardRef<HTMLDivElement, ToastContainerProps>(
-  ({ 
-    toasts = [],
-    onToastClose,
-    position = 'top-right',
-    maxToasts = 5,
-    ...props 
-  }, ref) => {
+  ({ toasts = [], onToastClose, toastPosition = 'top-right', maxToasts = 5, ...props }, ref) => {
     const visibleToasts = toasts.slice(0, maxToasts);
 
     return (
-      <PositionedToastContainer
-        ref={ref}
-        position={position}
-        {...props}
-      >
+      <PositionedToastContainer ref={ref} toastPosition={toastPosition} {...props}>
         {visibleToasts.map((toast) => (
           <Toast
             key={toast.id}
@@ -203,7 +201,7 @@ export const ToastContainerComponent = forwardRef<HTMLDivElement, ToastContainer
         ))}
       </PositionedToastContainer>
     );
-  }
+  },
 );
 
 ToastContainerComponent.displayName = 'ToastContainerComponent';

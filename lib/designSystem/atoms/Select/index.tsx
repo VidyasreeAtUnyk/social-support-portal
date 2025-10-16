@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  SelectProps
+  SelectProps,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
@@ -17,7 +17,7 @@ export interface CustomSelectProps extends Omit<SelectProps, 'onChange' | 'size'
    * Select size
    * @default 'medium'
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
   /**
    * Select variant
    * @default 'outlined'
@@ -77,12 +77,7 @@ const StyledFormControl = styled(FormControl)<CustomSelectProps>(({ theme, size 
         padding: '12px 14px',
       },
     }),
-    ...(size === 'large' && {
-      fontSize: '1.125rem',
-      '& .MuiOutlinedInput-input': {
-        padding: '16px 14px',
-      },
-    }),
+    // no 'large' size; use medium defaults
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.main,
     },
@@ -97,9 +92,7 @@ const StyledFormControl = styled(FormControl)<CustomSelectProps>(({ theme, size 
     ...(size === 'medium' && {
       fontSize: '1rem',
     }),
-    ...(size === 'large' && {
-      fontSize: '1.125rem',
-    }),
+    // no 'large'
   },
   '& .MuiFormHelperText-root': {
     marginLeft: 0,
@@ -110,15 +103,13 @@ const StyledFormControl = styled(FormControl)<CustomSelectProps>(({ theme, size 
     ...(size === 'medium' && {
       fontSize: '0.875rem',
     }),
-    ...(size === 'large' && {
-      fontSize: '1rem',
-    }),
+    // no 'large'
   },
 }));
 
 /**
  * Select component with consistent styling and validation states
- * 
+ *
  * @example
  * ```tsx
  * <Select
@@ -130,7 +121,7 @@ const StyledFormControl = styled(FormControl)<CustomSelectProps>(({ theme, size 
  *     { value: 'ca', label: 'Canada' },
  *   ]}
  * />
- * 
+ *
  * <Select
  *   label="Status"
  *   value={status}
@@ -142,20 +133,23 @@ const StyledFormControl = styled(FormControl)<CustomSelectProps>(({ theme, size 
  * ```
  */
 export const CustomSelect = forwardRef<HTMLDivElement, CustomSelectProps>(
-  ({ 
-    size = 'medium', 
-    variant = 'outlined', 
-    fullWidth = true,
-    label,
-    helperText,
-    error = false,
-    required = false,
-    disabled = false,
-    options = [],
-    onChange,
-    children,
-    ...props 
-  }, ref) => {
+  (
+    {
+      size = 'medium',
+      variant = 'outlined',
+      fullWidth = true,
+      label,
+      helperText,
+      error = false,
+      required = false,
+      disabled = false,
+      options = [],
+      onChange,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <StyledFormControl
         ref={ref}
@@ -167,18 +161,9 @@ export const CustomSelect = forwardRef<HTMLDivElement, CustomSelectProps>(
         disabled={disabled}
       >
         {label && <InputLabel>{label}</InputLabel>}
-        <Select
-          label={label}
-          onChange={onChange}
-          size={size === 'large' ? 'medium' : size}
-          {...props}
-        >
+        <Select label={label} onChange={onChange} size={size} {...props}>
           {options.map((option) => (
-            <MenuItem 
-              key={option.value} 
-              value={option.value}
-              disabled={option.disabled}
-            >
+            <MenuItem key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </MenuItem>
           ))}
@@ -187,7 +172,7 @@ export const CustomSelect = forwardRef<HTMLDivElement, CustomSelectProps>(
         {helperText && <FormHelperText>{helperText}</FormHelperText>}
       </StyledFormControl>
     );
-  }
+  },
 );
 
 CustomSelect.displayName = 'Select';

@@ -15,7 +15,7 @@ export default function AIHelper({ fieldKey }: AIHelperProps) {
   const [suggestion, setSuggestion] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleHelpMeWrite = async () => {
+  const handleHelpMeWrite = async (): Promise<void> => {
     setLoading(true);
     try {
       const data: AISuggestionResponse = await getAISuggestion({
@@ -24,8 +24,9 @@ export default function AIHelper({ fieldKey }: AIHelperProps) {
         config: AI_CONFIG,
       });
       setSuggestion(data.choices[0].message.content);
-    } catch (err: any) {
-      setSuggestion(`Error: ${err.message}`);
+    } catch (err: unknown) {
+      const message = (err as Error)?.message || 'Unknown error';
+      setSuggestion(`Error: ${message}`);
     } finally {
       setLoading(false);
     }

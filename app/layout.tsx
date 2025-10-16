@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <I18nextProvider i18n={i18n}>
                 <ThemeProviderWrapper>
                   <ToastProvider>
-                    <Header />
+                    <Header title="Social Support" />
                     {children}
                     <Footer />
                   </ToastProvider>

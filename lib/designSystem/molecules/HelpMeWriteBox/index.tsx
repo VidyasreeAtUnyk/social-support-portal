@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles';
 import { forwardRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export interface HelpMeWriteBoxProps extends BoxProps {
+export interface HelpMeWriteBoxProps extends Omit<BoxProps, 'onChange'> {
   /**
    * Field label
    */
@@ -50,7 +50,7 @@ export interface HelpMeWriteBoxProps extends BoxProps {
   /**
    * Callback when field value changes
    */
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
   /**
    * Whether AI is currently generating
    * @default false
@@ -66,9 +66,14 @@ export interface HelpMeWriteBoxProps extends BoxProps {
   description?: string;
 }
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+interface StyledDialogProps {
+  // Dialog-specific props can be added here if needed
+  [key: string]: unknown;
+}
+
+const StyledDialog = styled(Dialog)<StyledDialogProps>(({ theme }) => ({
   '& .MuiDialog-paper': {
-    borderRadius: theme.shape.borderRadius * 2,
+    borderRadius: Number(theme.shape.borderRadius) * 2,
     // minWidth: 500,
     maxWidth: 700,
   },
@@ -149,7 +154,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       onClose,
       onRequestSuggestion,
       onAcceptSuggestion,
-      onChange,
+      onValueChange,
       loading = false,
       error,
       description,
@@ -178,8 +183,8 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       if (onAcceptSuggestion) {
         onAcceptSuggestion(suggestion);
       }
-      if (onChange) {
-        onChange(suggestion);
+      if (onValueChange) {
+        onValueChange(suggestion);
       }
       setShowSuggestion(false);
       setSuggestion('');
@@ -193,8 +198,8 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     };
 
     const handleEditSuggestion = () => {
-      if (onChange) {
-        onChange(suggestion);
+      if (onValueChange) {
+        onValueChange(suggestion);
       }
       setShowSuggestion(false);
     };
@@ -206,7 +211,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     }, [open, value]);
 
     return (
-      <StyledDialog ref={ref} open={open} onClose={onClose} maxWidth="md" fullWidth {...props}>
+      <StyledDialog ref={ref} open={open} onClose={onClose} fullWidth>
         <DialogHeader>
           <AIIconContainer>
             <AIIcon />

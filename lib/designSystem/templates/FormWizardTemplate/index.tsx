@@ -102,7 +102,11 @@ export interface FormWizardTemplateProps extends BoxProps {
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
-const StyledContainer = styled(Container)<FormWizardTemplateProps>(
+interface StyledContainerProps {
+  variant?: 'default' | 'compact' | 'detailed';
+}
+
+const StyledContainer = styled(Container)<StyledContainerProps>(
   ({ theme, variant = 'default' }) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
@@ -124,7 +128,7 @@ const FormHeader = styled(Box)(({ theme }) => ({
 
 const FormContent = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius * 2,
+  borderRadius: (theme.shape.borderRadius as number) * 2,
   boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
 }));
 
@@ -135,7 +139,7 @@ const StepIndicator = styled(Box)(({ theme }) => ({
   // backgroundColor: theme.palette.background.default,
   color: theme.palette.text.secondary,
   padding: theme.spacing(1, 2),
-  borderRadius: theme.shape.borderRadius * 2,
+  borderRadius: (theme.shape.borderRadius as number) * 2,
   fontSize: '0.875rem',
   fontWeight: 500,
   marginBottom: theme.spacing(2),
@@ -192,7 +196,7 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
     const { t } = useTranslation(['common']);
 
     return (
-      <StyledContainer ref={ref} maxWidth={maxWidth} variant={variant} {...props}>
+      <StyledContainer ref={ref} maxWidth={maxWidth} variant={variant}>
         <FormHeader>
           <Typography variant="h3" color="textPrimary" sx={{ mb: 1 }}>
             {title}

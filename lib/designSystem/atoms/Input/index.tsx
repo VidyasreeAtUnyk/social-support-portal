@@ -4,7 +4,7 @@ import { TextField, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
 
-export interface CustomInputProps extends TextFieldProps {
+export interface CustomInputProps extends Omit<TextFieldProps, 'size'> {
   /**
    * Input type
    */
@@ -13,7 +13,7 @@ export interface CustomInputProps extends TextFieldProps {
    * Input size
    * @default 'medium'
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
   /**
    * Input variant
    * @default 'outlined'
@@ -69,12 +69,7 @@ const StyledTextField = styled(TextField)<CustomInputProps>(({ theme, size }) =>
         padding: '12px 14px',
       },
     }),
-    ...(size === 'large' && {
-      fontSize: '1.125rem',
-      '& .MuiOutlinedInput-input': {
-        padding: '16px 14px',
-      },
-    }),
+    // no 'large' size; use medium defaults
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.main,
     },
@@ -89,9 +84,7 @@ const StyledTextField = styled(TextField)<CustomInputProps>(({ theme, size }) =>
     ...(size === 'medium' && {
       fontSize: '1rem',
     }),
-    ...(size === 'large' && {
-      fontSize: '1.125rem',
-    }),
+    // no 'large'
   },
   '& .MuiFormHelperText-root': {
     marginLeft: 0,
@@ -102,9 +95,7 @@ const StyledTextField = styled(TextField)<CustomInputProps>(({ theme, size }) =>
     ...(size === 'medium' && {
       fontSize: '0.875rem',
     }),
-    ...(size === 'large' && {
-      fontSize: '1rem',
-    }),
+    // no 'large'
   },
 }));
 

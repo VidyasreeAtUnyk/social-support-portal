@@ -3,7 +3,7 @@
 import { FieldConfig, currencies, familyInfoForm } from '@lib/content/step2Form';
 import { FormField, Input, Select } from '@lib/designSystem';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
-import { Box, Grid, MenuItem } from '@mui/material';
+import { Box, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface Step2FormProps {
@@ -28,17 +28,23 @@ export const Step2Form = ({ form }: Step2FormProps) => {
     formName,
   }: {
     dependsOn?: string;
-    watchedValues: Record<string, any>;
+    watchedValues: Record<string, Record<string, unknown>>;
     formName: string;
   }) => {
-    return !!dependsOn && !watchedValues[formName][dependsOn];
+    return !!dependsOn && !watchedValues[formName]?.[dependsOn];
   };
 
   return (
     <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Grid container spacing={2} direction="row" justifyContent="center">
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {familyInfoForm.map((field) => (
-          <Grid item xs={12} md={field.type === 'number' ? 3 : 6} key={field.name}>
+          <Box
+            key={field.name}
+            sx={{
+              flex: field.type === 'number' ? '1 1 150px' : '1 1 300px',
+              minWidth: field.type === 'number' ? '150px' : '300px',
+            }}
+          >
             <FormField
               label={t(field.label, { ns: 'step2' })}
               required={field.required}
@@ -55,7 +61,10 @@ export const Step2Form = ({ form }: Step2FormProps) => {
                     helperText={helperText || ' '} // to maintain height
                     disabled={isDisabled({
                       dependsOn: field.dependsOn,
-                      watchedValues,
+                      watchedValues: watchedValues as unknown as Record<
+                        string,
+                        Record<string, unknown>
+                      >,
                       formName: 'familyInfo',
                     })}
                   >
@@ -78,9 +87,9 @@ export const Step2Form = ({ form }: Step2FormProps) => {
                 )
               }
             </FormField>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3F
 import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button } from '@mui/material';
 // import { getAISuggestion } from '@services/ai';
 // import { AISuggestionResponse } from '@services/ai/types';
 import { mockAISuggestion } from '@services/ai/mockAiSuggestion';
@@ -55,7 +55,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
     try {
       setLoadingField((prev) => ({ ...prev, [field]: true }));
 
-      const prompt = form.getValues(`situationDescriptions.${field}`);
+      const prompt = form.getValues(`situationDescriptions.${field}` as const);
       const response = await mockAISuggestion(field, prompt || `Help me write ${field}`);
 
       return response;
@@ -93,17 +93,17 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   //   // }
   // };
 
-  const fields: Array<keyof typeof helpBoxOpen> = [
-    'financialSituation',
-    'employmentCircumstances',
-    'reasonForApplying',
-  ];
+  // const fields: Array<keyof typeof helpBoxOpen> = [
+  //   'financialSituation',
+  //   'employmentCircumstances',
+  //   'reasonForApplying',
+  // ];
 
   return (
     <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Grid container spacing={2} direction="column">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {situationDescriptionsForm.map((field: Step3FieldConfig) => (
-          <Grid item xs={12} key={field.name}>
+          <Box key={field.name} sx={{ width: '100%' }}>
             <FormField
               label={t(field.label, { ns: 'step3' })}
               required={field.required}
@@ -121,7 +121,10 @@ export const Step3Form = ({ form }: Step3FormProps) => {
                     placeholder={t(field.placeholder, { ns: 'step3' })}
                   />
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button size="small" onClick={() => openHelpBox(field.name)}>
+                    <Button
+                      size="small"
+                      onClick={() => openHelpBox(field.name as keyof typeof helpBoxOpen)}
+                    >
                       {t('common:helpMeWrite')}
                     </Button>
                   </Box>
@@ -131,18 +134,23 @@ export const Step3Form = ({ form }: Step3FormProps) => {
 
             <HelpMeWriteBox
               label={t(field.label, { ns: 'step3' })}
-              open={helpBoxOpen[field.name]}
-              value={form.getValues(`situationDescriptions.${field.name}`)}
-              loading={loadingField[field.name]}
-              onClose={() => closeHelpBox(field.name)}
-              onRequestSuggestion={(prompt) => handleRequestSuggestion(field.name, prompt)}
+              open={helpBoxOpen[field.name as keyof typeof helpBoxOpen]}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              value={form.getValues(`situationDescriptions.${field.name}` as any)}
+              loading={loadingField[field.name as keyof typeof loadingField]}
+              onClose={() => closeHelpBox(field.name as keyof typeof helpBoxOpen)}
+              onRequestSuggestion={() =>
+                handleRequestSuggestion(field.name as keyof typeof loadingField)
+              }
               onAcceptSuggestion={(val) =>
-                form.setValue(`situationDescriptions.${field.name}`, val, {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                form.setValue(`situationDescriptions.${field.name}` as any, val, {
                   shouldValidate: true,
                 })
               }
-              onChange={(val) =>
-                form.setValue(`situationDescriptions.${field.name}`, val, {
+              onValueChange={(val) =>
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                form.setValue(`situationDescriptions.${field.name}` as any, val, {
                   shouldValidate: true,
                 })
               }
@@ -151,9 +159,9 @@ export const Step3Form = ({ form }: Step3FormProps) => {
                 defaultValue: '',
               })}
             />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };

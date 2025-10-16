@@ -3,7 +3,7 @@
 import { FieldConfig, FieldOption, personalInfoForm } from '@lib/content/step1Form';
 import { FormField, Input, Select } from '@lib/designSystem';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
-import { Box, Grid, MenuItem } from '@mui/material';
+import { Box, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -61,23 +61,17 @@ export const Step1Form = ({ form }: Step1FormProps) => {
     formName,
   }: {
     dependsOn?: string;
-    watchedValues: Record<string, any>;
+    watchedValues: Record<string, Record<string, unknown>>;
     formName: string;
   }): boolean => {
-    return !!dependsOn && !watchedValues[formName][dependsOn];
+    return !!dependsOn && !watchedValues[formName]?.[dependsOn];
   };
 
   return (
     <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Grid
-        container
-        rowSpacing={{ xs: 1, sm: 1 }}
-        columnSpacing={{ xs: 1, sm: 2 }}
-        direction="row"
-        justifyContent="center"
-      >
-        {personalInfoForm.map((field, index) => (
-          <Grid item xs={12} md={6} key={field.name}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        {personalInfoForm.map((field) => (
+          <Box key={field.name} sx={{ flex: '1 1 300px', minWidth: '300px' }}>
             <FormField
               label={t(field.label, { ns: 'step1' })}
               required={field.required}
@@ -94,11 +88,14 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                     helperText={helperText || ' '} // to maintain height
                     disabled={isDisabled({
                       dependsOn: field.dependsOn,
-                      watchedValues,
+                      watchedValues: watchedValues as unknown as Record<
+                        string,
+                        Record<string, unknown>
+                      >,
                       formName: 'personalInfo',
                     })}
                   >
-                    {getOptions(field).map((opt) => (
+                    {getOptions(field as FieldConfig).map((opt) => (
                       <MenuItem key={opt.value} value={opt.value}>
                         {t(opt.label, { ns: 'step1' })}
                       </MenuItem>
@@ -117,9 +114,9 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                 )
               }
             </FormField>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };

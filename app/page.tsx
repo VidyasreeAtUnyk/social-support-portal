@@ -21,14 +21,13 @@ export default function HomePage() {
   const { form, validateStep, clearForm } = useSocialSupportForm();
   const totalSteps = 3;
 
-  const stepLabels = useMemo(
-    () => [
+  const stepLabels = useMemo(() => {
+    return [
       t('step1:title', { ns: 'step1' }),
       t('step2:title', { ns: 'step2' }),
       t('step3:title', { ns: 'step3' }),
-    ],
-    [i18n.language, t],
-  );
+    ];
+  }, [i18n.language, t]);
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
@@ -65,8 +64,9 @@ export default function HomePage() {
         console.error('Submission failed:', response.message);
         showToast({ message: `Submission failed!`, severity: 'error' });
       }
-    } catch (error: any) {
-      console.error('Submission error:', error.message || error);
+    } catch (error: unknown) {
+      const message = (error as Error)?.message || String(error);
+      console.error('Submission error:', message);
       showToast({ message: `Submission failed!`, severity: 'error' });
     }
   };

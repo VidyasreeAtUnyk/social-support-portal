@@ -4,9 +4,9 @@ import { Typography } from '@lib/designSystem/atoms/Typography';
 import { Box, BoxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldPath } from 'react-hook-form';
 
-export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> extends BoxProps {
+export interface FormFieldProps extends Omit<BoxProps, 'children'> {
   /**
    * Field label
    */
@@ -26,8 +26,8 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
   children:
     | React.ReactNode
     | ((fieldProps: {
-        value?: any;
-        onChange?: (...args: any) => void;
+        value?: unknown;
+        onChange?: (...args: unknown[]) => void;
         error?: boolean;
         helperText?: string;
       }) => React.ReactNode);
@@ -49,45 +49,52 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
   /**
    * React Hook Form control
    */
-  control?: Control<TFieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control?: Control<any>;
   /**
    * Field name for React Hook Form
    */
-  name?: FieldPath<TFieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  name?: FieldPath<any>;
   /**
    * Error message to display
    */
   error?: string;
 }
 
-const StyledFormField = styled(Box)<FormFieldProps>(
-  ({ theme, direction = 'column', labelWidth = '30%' }) => ({
-    display: 'flex',
-    flexDirection: direction,
-    gap: theme.spacing(1),
-    width: '100%',
-    minWidth: '300px',
-    ...(direction === 'row' && {
-      alignItems: 'flex-start',
-      '& .form-field-label': {
-        width: labelWidth,
-        minWidth: labelWidth,
-        paddingTop: theme.spacing(1),
-      },
-      '& .form-field-content': {
-        flex: 1,
-      },
-    }),
-    ...(direction === 'column' && {
-      '& .form-field-label': {
-        width: '100%',
-      },
-      '& .form-field-content': {
-        width: '100%',
-      },
-    }),
+interface StyledFormFieldProps {
+  direction?: 'row' | 'column';
+  labelWidth?: string;
+}
+
+const StyledFormField = styled(Box, {
+  shouldForwardProp: (prop) => !['direction', 'labelWidth'].includes(prop as string),
+})<StyledFormFieldProps>(({ theme, direction = 'column', labelWidth = '30%' }) => ({
+  display: 'flex',
+  flexDirection: direction,
+  gap: theme.spacing(1),
+  width: '100%',
+  minWidth: '300px',
+  ...(direction === 'row' && {
+    alignItems: 'flex-start',
+    '& .form-field-label': {
+      width: labelWidth,
+      minWidth: labelWidth,
+      paddingTop: theme.spacing(1),
+    },
+    '& .form-field-content': {
+      flex: 1,
+    },
   }),
-);
+  ...(direction === 'column' && {
+    '& .form-field-label': {
+      width: '100%',
+    },
+    '& .form-field-content': {
+      width: '100%',
+    },
+  }),
+}));
 
 const LabelContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -127,7 +134,7 @@ const RequiredIndicator = styled('span')(({ theme }) => ({
  * </FormField>
  * ```
  */
-export const FormField = forwardRef<HTMLDivElement, FormFieldProps<any>>(
+export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
   (
     {
       label,
@@ -152,11 +159,20 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps<any>>(
             name={name}
             render={({ field, fieldState }) => (
               <Box className="form-field-content">
-                {children({
-                  ...field,
-                  error: !!fieldState.error,
-                  helperText: fieldState.error?.message,
-                })}
+                {typeof children === 'function'
+                  ? (
+                      children as (fieldProps: {
+                        value?: unknown;
+                        onChange?: (...args: unknown[]) => void;
+                        error?: boolean;
+                        helperText?: string;
+                      }) => React.ReactNode
+                    )({
+                      ...field,
+                      error: !!fieldState.error,
+                      helperText: fieldState.error?.message,
+                    })
+                  : children}
               </Box>
             )}
           />
@@ -165,7 +181,7 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps<any>>(
 
       return (
         <Box className="form-field-content">
-          {children}
+          {typeof children === 'function' ? children({}) : children}
           {error && (
             <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
               {error}

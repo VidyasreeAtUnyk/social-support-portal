@@ -24,7 +24,7 @@ import {
   Person as PersonIcon,
   Save as SaveIcon,
 } from '@mui/icons-material';
-import { Box, Container, Grid, Paper, Tab, Tabs } from '@mui/material';
+import { Box, Container, Paper, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 
 interface TabPanelProps {
@@ -112,9 +112,9 @@ export default function ComponentDocumentation() {
               Basic building blocks of the design system.
             </Typography>
 
-            <Grid container spacing={4}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
               {/* Button */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Button" subtitle="Various button variants and states">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -135,10 +135,10 @@ export default function ComponentDocumentation() {
                     <Button loading>Loading</Button>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* IconButton */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="IconButton" subtitle="Icon-only buttons">
                   <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <IconButton variant="text">
@@ -155,10 +155,10 @@ export default function ComponentDocumentation() {
                     </IconButton>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* Input */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Input" subtitle="Text input fields">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Input label="Email" placeholder="Enter your email" type="email" />
@@ -167,10 +167,10 @@ export default function ComponentDocumentation() {
                     <Input label="Disabled" disabled value="Disabled input" />
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* Select */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Select" subtitle="Dropdown selection">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Select
@@ -192,20 +192,20 @@ export default function ComponentDocumentation() {
                     />
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* TextArea */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="TextArea" subtitle="Multi-line text input">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <TextArea label="Description" placeholder="Enter your description" rows={4} />
                     <TextArea label="Comments" rows={6} resizable={false} />
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* Typography */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Typography" subtitle="Text styling variants">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Typography variant="h1">Heading 1</Typography>
@@ -219,10 +219,10 @@ export default function ComponentDocumentation() {
                     <Typography variant="overline">Overline text</Typography>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* Toast */}
-              <Grid item xs={12}>
+              <Box sx={{ flex: '1 1 100%', minWidth: '100%' }}>
                 <CardContainer title="Toast" subtitle="Notification messages">
                   <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <Button
@@ -255,8 +255,8 @@ export default function ComponentDocumentation() {
                     </Button>
                   </Box>
                 </CardContainer>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </TabPanel>
 
           {/* Molecules Tab */}
@@ -268,9 +268,9 @@ export default function ComponentDocumentation() {
               Combinations of atoms that form functional components.
             </Typography>
 
-            <Grid container spacing={4}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
               {/* FormField */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="FormField" subtitle="Form field with label and validation">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <FormField
@@ -285,10 +285,10 @@ export default function ComponentDocumentation() {
                     </FormField>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* FormStep */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="FormStep" subtitle="Multi-step form layout">
                   <FormStep
                     title="Personal Information"
@@ -301,10 +301,10 @@ export default function ComponentDocumentation() {
                     <Input label="Email" />
                   </FormStep>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* StepProgressBar */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="StepProgressBar" subtitle="Progress indicator">
                   <StepProgressBar
                     currentStep={2}
@@ -312,10 +312,10 @@ export default function ComponentDocumentation() {
                     stepLabels={['Personal', 'Financial', 'Situation']}
                   />
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* HelpMeWriteBox */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="HelpMeWriteBox" subtitle="AI writing assistant">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <TextArea
@@ -333,10 +333,10 @@ export default function ComponentDocumentation() {
                     </Button>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* FormActions */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="FormActions" subtitle="Form action buttons">
                   <FormActions
                     previousButton={{
@@ -349,17 +349,17 @@ export default function ComponentDocumentation() {
                     }}
                   />
                 </CardContainer>
-              </Grid>
+              </Box>
 
               {/* CardContainer */}
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="CardContainer" subtitle="Card layout component">
                   <Typography variant="body1">
                     This is a card container with consistent styling and layout options.
                   </Typography>
                 </CardContainer>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </TabPanel>
 
           {/* Templates Tab */}
@@ -371,9 +371,9 @@ export default function ComponentDocumentation() {
               Complete page layouts and complex component compositions.
             </Typography>
 
-            <Grid container spacing={4}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
               {/* FormWizardTemplate */}
-              <Grid item xs={12}>
+              <Box sx={{ flex: '1 1 100%', minWidth: '100%' }}>
                 <CardContainer>
                   <FormWizardTemplate
                     title="Social Support Application"
@@ -398,8 +398,8 @@ export default function ComponentDocumentation() {
                     </Box>
                   </FormWizardTemplate>
                 </CardContainer>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </TabPanel>
 
           {/* Theme Tab */}
@@ -411,8 +411,8 @@ export default function ComponentDocumentation() {
               Design tokens, color palettes, and theme configuration.
             </Typography>
 
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={6}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Color Palette" subtitle="Light theme colors">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -433,9 +433,9 @@ export default function ComponentDocumentation() {
                     </Box>
                   </Box>
                 </CardContainer>
-              </Grid>
+              </Box>
 
-              <Grid item xs={12} md={6}>
+              <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
                 <CardContainer title="Typography Scale" subtitle="Font sizes and weights">
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Typography variant="h1">Heading 1</Typography>
@@ -449,8 +449,8 @@ export default function ComponentDocumentation() {
                     <Typography variant="caption">Caption</Typography>
                   </Box>
                 </CardContainer>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </TabPanel>
         </Paper>
 

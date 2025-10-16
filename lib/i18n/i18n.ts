@@ -9,7 +9,7 @@ i18n
   .init({
     // remove lng: initialLng
     fallbackLng: 'en',
-    debug: true,
+    debug: false,
     ns: namespaces,
     defaultNS: 'common',
     interpolation: { escapeValue: false },
