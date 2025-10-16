@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { DEFAULT_ALLOWED_COUNTRIES, DEFAULT_PHONE_COUNTRY } from '@lib/config/countries';
 import { FieldConfig, FieldOption, personalInfoForm } from '@lib/content/step1Form';
 import { FormField, Input, Select } from '@lib/designSystem';
@@ -70,76 +71,84 @@ export const Step1Form = ({ form }: Step1FormProps) => {
   };
 
   return (
-    <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {personalInfoForm.map((field) => (
-          <Box key={field.name} sx={{ flex: '1 1 300px', minWidth: '300px' }}>
-            <FormField
-              label={t(field.label, { ns: 'step1' })}
-              required={field.required}
-              control={form.control}
-              name={field.name}
-            >
-              {({ value, onChange, error, helperText }) =>
-                field.type === 'select' ? (
-                  <Select
-                    fullWidth
-                    value={value ?? ''}
-                    onChange={onChange}
-                    error={error}
-                    helperText={helperText || ' '} // to maintain height
-                    disabled={isDisabled({
-                      dependsOn: field.dependsOn,
-                      watchedValues: watchedValues as unknown as Record<
-                        string,
-                        Record<string, unknown>
-                      >,
-                      formName: 'personalInfo',
-                    })}
-                  >
-                    {getOptions(field as FieldConfig).map((opt) => (
-                      <MenuItem key={opt.value} value={opt.value}>
-                        {t(opt.label, { ns: 'step1' })}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ) : field.type === 'tel' ? (
-                  <PhoneInput
-                    fullWidth
-                    value={(value as string) || ''}
-                    selectedCountry={form.getValues('personalInfo.phoneCountry') || DEFAULT_PHONE_COUNTRY}
-                    onChange={(phoneValue, validation, country) => {
-                      onChange?.(phoneValue);
-                      // Store the selected phone country separately from address country
-                      if (country) {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        form.setValue('personalInfo.phoneCountry' as any, country);
-                      }
-                    }}
-                    error={error ? t('phone.errors.notValid', { ns: 'common' }) : undefined}
-                    helperText={helperText || ' '} // to maintain height
-                    placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
-                    defaultCountry={DEFAULT_PHONE_COUNTRY}
-                    showCountrySelector={true}
-                    formatOnChange={true}
-                    allowedCountries={DEFAULT_ALLOWED_COUNTRIES}
-                  />
-                ) : (
-                  <Input
-                    fullWidth
-                    type={field.type || 'text'}
-                    value={value ?? ''}
-                    onChange={onChange}
-                    error={error}
-                    helperText={helperText || ' '} // to maintain height
-                    placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
-                  />
-                )
-              }
-            </FormField>
-          </Box>
-        ))}
+    <ErrorBoundary
+      fallbackType="form"
+      showDebugInfo={process.env.NODE_ENV === 'development'}
+      onError={(error, errorInfo) => {
+        console.error('Step1Form Error:', error, errorInfo);
+      }}
+    >
+      <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          {personalInfoForm.map((field) => (
+            <Box key={field.name} sx={{ flex: '1 1 300px', minWidth: '300px' }}>
+              <FormField
+                label={t(field.label, { ns: 'step1' })}
+                required={field.required}
+                control={form.control}
+                name={field.name}
+              >
+                {({ value, onChange, error, helperText }) =>
+                  field.type === 'select' ? (
+                    <Select
+                      fullWidth
+                      value={value ?? ''}
+                      onChange={onChange}
+                      error={error}
+                      helperText={helperText || ' '} // to maintain height
+                      disabled={isDisabled({
+                        dependsOn: field.dependsOn,
+                        watchedValues: watchedValues as unknown as Record<
+                          string,
+                          Record<string, unknown>
+                        >,
+                        formName: 'personalInfo',
+                      })}
+                    >
+                      {getOptions(field as FieldConfig).map((opt) => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                          {t(opt.label, { ns: 'step1' })}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  ) : field.type === 'tel' ? (
+                    <PhoneInput
+                      fullWidth
+                      value={(value as string) || ''}
+                      selectedCountry={form.getValues('personalInfo.phoneCountry') || DEFAULT_PHONE_COUNTRY}
+                      onChange={(phoneValue, validation, country) => {
+                        onChange?.(phoneValue);
+                        // Store the selected phone country separately from address country
+                        if (country) {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          form.setValue('personalInfo.phoneCountry' as any, country);
+                        }
+                      }}
+                      error={error ? t('phone.errors.notValid', { ns: 'common' }) : undefined}
+                      helperText={helperText || ' '} // to maintain height
+                      placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                      defaultCountry={DEFAULT_PHONE_COUNTRY}
+                      showCountrySelector={true}
+                      formatOnChange={true}
+                      allowedCountries={DEFAULT_ALLOWED_COUNTRIES}
+                    />
+                  ) : (
+                    <Input
+                      fullWidth
+                      type={field.type || 'text'}
+                      value={value ?? ''}
+                      onChange={onChange}
+                      error={error}
+                      helperText={helperText || ' '} // to maintain height
+                      placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                    />
+                  )
+                }
+              </FormField>
+            </Box>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </ErrorBoundary>
   );
 };

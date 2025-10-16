@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { ToastProvider } from '@lib/context/ToastContext';
 import { Footer, Header } from '@lib/designSystem/';
 import i18n from '@lib/i18n/i18n';
@@ -58,11 +59,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PersistGate loading={null} persistor={persistor}>
               <I18nextProvider i18n={i18n}>
                 <ThemeProviderWrapper>
-                  <ToastProvider>
-                    <Header title="Social Support" />
-                    {children}
-                    <Footer />
-                  </ToastProvider>
+                  <ErrorBoundary
+                    fallbackType="component"
+                    showDebugInfo={process.env.NODE_ENV === 'development'}
+                    onError={(error, errorInfo) => {
+                      // Log to external service in production
+                      console.error('Application Error:', error, errorInfo);
+                    }}
+                  >
+                    <ToastProvider>
+                      <Header title="Social Support" />
+                      {children}
+                      <Footer />
+                    </ToastProvider>
+                  </ErrorBoundary>
                 </ThemeProviderWrapper>
               </I18nextProvider>
             </PersistGate>

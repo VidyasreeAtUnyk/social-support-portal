@@ -1,6 +1,7 @@
 'use client';
 
 // import { AI_CONFIG } from '@lib/ai/aiConfig';
+import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3Form';
 // import { useToast } from '@lib/context/ToastContext';
 import { FormField, TextArea } from '@lib/designSystem';
@@ -100,68 +101,76 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   // ];
 
   return (
-    <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {situationDescriptionsForm.map((field: Step3FieldConfig) => (
-          <Box key={field.name} sx={{ width: '100%' }}>
-            <FormField
-              label={t(field.label, { ns: 'step3' })}
-              required={field.required}
-              control={form.control}
-              name={`situationDescriptions.${field.name}`}
-            >
-              {({ value, onChange, error, helperText }) => (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <TextArea
-                    rows={6}
-                    value={value}
-                    onChange={onChange}
-                    error={error}
-                    helperText={helperText || ' '} // to maintain height
-                    placeholder={t(field.placeholder, { ns: 'step3' })}
-                  />
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                      size="small"
-                      onClick={() => openHelpBox(field.name as keyof typeof helpBoxOpen)}
-                    >
-                      {t('common:helpMeWrite')}
-                    </Button>
+    <ErrorBoundary
+      fallbackType="form"
+      showDebugInfo={process.env.NODE_ENV === 'development'}
+      onError={(error, errorInfo) => {
+        console.error('Step3Form Error:', error, errorInfo);
+      }}
+    >
+      <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {situationDescriptionsForm.map((field: Step3FieldConfig) => (
+            <Box key={field.name} sx={{ width: '100%' }}>
+              <FormField
+                label={t(field.label, { ns: 'step3' })}
+                required={field.required}
+                control={form.control}
+                name={`situationDescriptions.${field.name}`}
+              >
+                {({ value, onChange, error, helperText }) => (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <TextArea
+                      rows={6}
+                      value={value}
+                      onChange={onChange}
+                      error={error}
+                      helperText={helperText || ' '} // to maintain height
+                      placeholder={t(field.placeholder, { ns: 'step3' })}
+                    />
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Button
+                        size="small"
+                        onClick={() => openHelpBox(field.name as keyof typeof helpBoxOpen)}
+                      >
+                        {t('common:helpMeWrite')}
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              )}
-            </FormField>
+                )}
+              </FormField>
 
-            <HelpMeWriteBox
-              label={t(field.label, { ns: 'step3' })}
-              open={helpBoxOpen[field.name as keyof typeof helpBoxOpen]}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value={form.getValues(`situationDescriptions.${field.name}` as any)}
-              loading={loadingField[field.name as keyof typeof loadingField]}
-              onClose={() => closeHelpBox(field.name as keyof typeof helpBoxOpen)}
-              onRequestSuggestion={() =>
-                handleRequestSuggestion(field.name as keyof typeof loadingField)
-              }
-              onAcceptSuggestion={(val) =>
+              <HelpMeWriteBox
+                label={t(field.label, { ns: 'step3' })}
+                open={helpBoxOpen[field.name as keyof typeof helpBoxOpen]}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                form.setValue(`situationDescriptions.${field.name}` as any, val, {
-                  shouldValidate: true,
-                })
-              }
-              onValueChange={(val) =>
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                form.setValue(`situationDescriptions.${field.name}` as any, val, {
-                  shouldValidate: true,
-                })
-              }
-              description={t(field.description || '', {
-                ns: 'step3',
-                defaultValue: '',
-              })}
-            />
-          </Box>
-        ))}
+                value={form.getValues(`situationDescriptions.${field.name}` as any)}
+                loading={loadingField[field.name as keyof typeof loadingField]}
+                onClose={() => closeHelpBox(field.name as keyof typeof helpBoxOpen)}
+                onRequestSuggestion={() =>
+                  handleRequestSuggestion(field.name as keyof typeof loadingField)
+                }
+                onAcceptSuggestion={(val) =>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  form.setValue(`situationDescriptions.${field.name}` as any, val, {
+                    shouldValidate: true,
+                  })
+                }
+                onValueChange={(val) =>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  form.setValue(`situationDescriptions.${field.name}` as any, val, {
+                    shouldValidate: true,
+                  })
+                }
+                description={t(field.description || '', {
+                  ns: 'step3',
+                  defaultValue: '',
+                })}
+              />
+            </Box>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </ErrorBoundary>
   );
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { FieldConfig, currencies, familyInfoForm } from '@lib/content/step2Form';
 import { FormField, Input, Select } from '@lib/designSystem';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
@@ -35,58 +36,66 @@ export const Step2Form = ({ form }: Step2FormProps) => {
   };
 
   return (
-    <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {familyInfoForm.map((field) => (
-          <Box
-            key={field.name}
-            sx={{ flex: '1 1 300px', minWidth: '300px' }}
-          >
-            <FormField
-              label={t(field.label, { ns: 'step2' })}
-              required={field.required}
-              control={form.control}
-              name={field.name}
+    <ErrorBoundary
+      fallbackType="form"
+      showDebugInfo={process.env.NODE_ENV === 'development'}
+      onError={(error, errorInfo) => {
+        console.error('Step2Form Error:', error, errorInfo);
+      }}
+    >
+      <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          {familyInfoForm.map((field) => (
+            <Box
+              key={field.name}
+              sx={{ flex: '1 1 300px', minWidth: '300px' }}
             >
-              {({ value, onChange, error, helperText }) =>
-                field.type === 'select' ? (
-                  <Select
-                    fullWidth
-                    value={value ?? ''}
-                    onChange={onChange}
-                    error={error}
-                    helperText={helperText || ' '} // to maintain height
-                    disabled={isDisabled({
-                      dependsOn: field.dependsOn,
-                      watchedValues: watchedValues as unknown as Record<
-                        string,
-                        Record<string, unknown>
-                      >,
-                      formName: 'familyInfo',
-                    })}
-                  >
-                    {getOptions(field).map((opt) => (
-                      <MenuItem key={opt.value} value={opt.value}>
-                        {t(opt.label, { ns: 'step2' })}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ) : (
-                  <Input
-                    fullWidth
-                    type={field.type || 'text'}
-                    value={value ?? ''}
-                    onChange={onChange}
-                    error={error}
-                    helperText={helperText || ' '} // to maintain height
-                    placeholder={field.placeholder ? t(field.placeholder, { ns: 'step2' }) : ''}
-                  />
-                )
-              }
-            </FormField>
-          </Box>
-        ))}
+              <FormField
+                label={t(field.label, { ns: 'step2' })}
+                required={field.required}
+                control={form.control}
+                name={field.name}
+              >
+                {({ value, onChange, error, helperText }) =>
+                  field.type === 'select' ? (
+                    <Select
+                      fullWidth
+                      value={value ?? ''}
+                      onChange={onChange}
+                      error={error}
+                      helperText={helperText || ' '} // to maintain height
+                      disabled={isDisabled({
+                        dependsOn: field.dependsOn,
+                        watchedValues: watchedValues as unknown as Record<
+                          string,
+                          Record<string, unknown>
+                        >,
+                        formName: 'familyInfo',
+                      })}
+                    >
+                      {getOptions(field).map((opt) => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                          {t(opt.label, { ns: 'step2' })}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  ) : (
+                    <Input
+                      fullWidth
+                      type={field.type || 'text'}
+                      value={value ?? ''}
+                      onChange={onChange}
+                      error={error}
+                      helperText={helperText || ' '} // to maintain height
+                      placeholder={field.placeholder ? t(field.placeholder, { ns: 'step2' }) : ''}
+                    />
+                  )
+                }
+              </FormField>
+            </Box>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </ErrorBoundary>
   );
 };
