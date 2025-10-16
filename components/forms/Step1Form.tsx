@@ -16,6 +16,11 @@ interface CountryOption {
   phoneCode: string;
 }
 
+interface StateOption {
+  code: string;
+  name: string;
+}
+
 interface Step1FormProps {
   form: ReturnType<typeof useSocialSupportForm>['form'];
 }
@@ -23,7 +28,7 @@ interface Step1FormProps {
 export const Step1Form = ({ form }: Step1FormProps) => {
   const { t, i18n } = useTranslation(['step1', 'countries', 'states']);
   const [countries, setCountries] = useState<CountryOption[]>([]);
-  const [states, setStates] = useState<string[]>([]);
+  const [states, setStates] = useState<StateOption[]>([]);
   const watchedValues = form.watch();
 
   const isRTL = i18n.language === 'ar';
@@ -43,7 +48,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
   useEffect(() => {
     if (!countryCode) return setStates([]);
 
-    const loadedStates = (t(countryCode, { ns: 'states', returnObjects: true }) as string[]) || [];
+    const loadedStates = (t(countryCode, { ns: 'states', returnObjects: true }) as StateOption[]) || [];
     setStates(loadedStates);
   }, [countryCode, countries, i18n.language, t]);
 
@@ -53,7 +58,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
       return countries.map((c) => ({ value: c.code, label: c.name }));
     }
     if (field.dynamicOptions === 'states') {
-      return states.map((s) => ({ value: s, label: s }));
+      return states.map((s) => ({ value: s.code, label: s.name }));
     }
     return field.options || [];
   };
