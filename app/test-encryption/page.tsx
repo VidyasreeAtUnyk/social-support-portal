@@ -17,7 +17,7 @@ export default function EncryptionTestPage() {
     
     try {
       // Import the test functions
-      const { testEncryption } = await import('@lib/security/encryption.test');
+      const { testEncryption } = await import('@lib/security/__tests__/encryption.test');
       
       // Capture console.log output
       const originalLog = console.log;
@@ -62,7 +62,7 @@ export default function EncryptionTestPage() {
     
     try {
       // Import the test functions
-      const { testDecryption } = await import('@lib/security/encryption.test');
+      const { testDecryption } = await import('@lib/security/__tests__/encryption.test');
       
       // Capture console.log output
       const originalLog = console.log;
