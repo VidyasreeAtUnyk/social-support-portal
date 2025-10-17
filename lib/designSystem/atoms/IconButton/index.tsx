@@ -67,7 +67,7 @@ const StyledIconButton = styled(MuiIconButton)<CustomIconButtonProps>(
     ...(loading && {
       color: 'transparent',
     }),
-  })
+  }),
 );
 
 const LoadingSpinner = styled('div')(({ theme }) => ({
@@ -89,13 +89,13 @@ const LoadingSpinner = styled('div')(({ theme }) => ({
 
 /**
  * IconButton component with consistent styling and loading state
- * 
+ *
  * @example
  * ```tsx
  * <IconButton size="medium" color="primary">
  *   <EditIcon />
  * </IconButton>
- * 
+ *
  * <IconButton loading variant="contained">
  *   <SaveIcon />
  * </IconButton>
@@ -116,7 +116,7 @@ export const IconButton = forwardRef<HTMLButtonElement, CustomIconButtonProps>(
         {children}
       </StyledIconButton>
     );
-  }
+  },
 );
 
 IconButton.displayName = 'IconButton';

@@ -3,6 +3,8 @@
 import { Typography } from '@lib/designSystem/atoms/Typography';
 import { AutoFixHigh as AIIcon, Close as CloseIcon } from '@mui/icons-material';
 import {
+  Alert,
+  AlertTitle,
   Box,
   BoxProps,
   Button,
@@ -17,7 +19,7 @@ import { styled } from '@mui/material/styles';
 import { forwardRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export interface HelpMeWriteBoxProps extends BoxProps {
+export interface HelpMeWriteBoxProps extends Omit<BoxProps, 'onChange'> {
   /**
    * Field label
    */
@@ -50,7 +52,7 @@ export interface HelpMeWriteBoxProps extends BoxProps {
   /**
    * Callback when field value changes
    */
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
   /**
    * Whether AI is currently generating
    * @default false
@@ -66,9 +68,14 @@ export interface HelpMeWriteBoxProps extends BoxProps {
   description?: string;
 }
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+interface StyledDialogProps {
+  // Dialog-specific props can be added here if needed
+  [key: string]: unknown;
+}
+
+const StyledDialog = styled(Dialog)<StyledDialogProps>(({ theme }) => ({
   '& .MuiDialog-paper': {
-    borderRadius: theme.shape.borderRadius * 2,
+    borderRadius: Number(theme.shape.borderRadius) * 2,
     // minWidth: 500,
     maxWidth: 700,
   },
@@ -149,7 +156,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       onClose,
       onRequestSuggestion,
       onAcceptSuggestion,
-      onChange,
+      onValueChange,
       loading = false,
       error,
       description,
@@ -160,7 +167,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     const [prompt, setPrompt] = useState('');
     const [suggestion, setSuggestion] = useState('');
     const [showSuggestion, setShowSuggestion] = useState(false);
-    const { t } = useTranslation(['common']);
+    const { t, i18n } = useTranslation(['common']);
 
     const handleRequestSuggestion = async () => {
       if (!onRequestSuggestion || !prompt.trim()) return;
@@ -178,8 +185,8 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
       if (onAcceptSuggestion) {
         onAcceptSuggestion(suggestion);
       }
-      if (onChange) {
-        onChange(suggestion);
+      if (onValueChange) {
+        onValueChange(suggestion);
       }
       setShowSuggestion(false);
       setSuggestion('');
@@ -193,8 +200,8 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     };
 
     const handleEditSuggestion = () => {
-      if (onChange) {
-        onChange(suggestion);
+      if (onValueChange) {
+        onValueChange(suggestion);
       }
       setShowSuggestion(false);
     };
@@ -206,7 +213,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     }, [open, value]);
 
     return (
-      <StyledDialog ref={ref} open={open} onClose={onClose} maxWidth="md" fullWidth {...props}>
+      <StyledDialog ref={ref} open={open} onClose={onClose} fullWidth>
         <DialogHeader>
           <AIIconContainer>
             <AIIcon />
@@ -231,6 +238,14 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             </Typography>
           )}
 
+          {/* Security Warning */}
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            <AlertTitle>{t('common:security.aiDisclaimer')}</AlertTitle>
+            <Typography variant="body2">
+              {t('common:security.piiWarning')}
+            </Typography>
+          </Alert>
+
           <TextField
             fullWidth
             multiline
@@ -239,15 +254,38 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             placeholder={t('common:aiPlaceholder')}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            sx={{ mb: 2 }}
+            sx={{ mb: 1 }}
+            inputProps={{
+              maxLength: 1000, // Limit input length
+            }}
+            helperText={`${prompt.length}/1000`}
+            FormHelperTextProps={{
+              sx: {
+                textAlign: 'right',
+                fontSize: '0.75rem',
+                color: prompt.length > 900 ? 'warning.main' : 'text.secondary',
+              }
+            }}
           />
 
           <Button
             variant="contained"
             onClick={handleRequestSuggestion}
-            disabled={loading || !prompt.trim()}
+            disabled={loading || !prompt.trim() || showSuggestion}
             startIcon={loading ? <CircularProgress size={16} /> : <AIIcon />}
-            sx={{ mb: 2 }}
+            sx={{ 
+              mb: 2,
+              minWidth: 'auto',
+              whiteSpace: 'nowrap',
+              '& .MuiButton-startIcon': {
+                marginRight: 1,
+                marginLeft: 1,
+              },
+              '& .MuiButton-startIcon.MuiButton-iconSizeMedium': {
+                marginRight: 1,
+                marginLeft: 1,
+              }
+            }}
           >
             {loading ? t('common:actions.generating') : t('common:actions.generate')}
           </Button>

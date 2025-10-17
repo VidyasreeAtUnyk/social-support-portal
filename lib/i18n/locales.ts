@@ -1,5 +1,7 @@
 // lib/i18n/locales.ts
 
+import { LANGUAGES, TRANSLATION_NAMESPACES } from '@lib/constants';
+
 // English
 import enCommon from '../../locales/en/common.json';
 import enCountries from '../../locales/en/countries.json';
@@ -17,22 +19,29 @@ import arStep2 from '../../locales/ar/step2.json';
 import arStep3 from '../../locales/ar/step3.json';
 
 export const locales = {
-  en: {
-    common: enCommon,
-    countries: enCountries,
-    states: enStates,
-    step1: enStep1,
-    step2: enStep2,
-    step3: enStep3,
+  [LANGUAGES.ENGLISH]: {
+    [TRANSLATION_NAMESPACES.COMMON]: enCommon,
+    [TRANSLATION_NAMESPACES.COUNTRIES]: enCountries,
+    [TRANSLATION_NAMESPACES.STATES]: enStates,
+    [TRANSLATION_NAMESPACES.STEP1]: enStep1,
+    [TRANSLATION_NAMESPACES.STEP2]: enStep2,
+    [TRANSLATION_NAMESPACES.STEP3]: enStep3,
   },
-  ar: {
-    common: arCommon,
-    countries: arCountries,
-    states: arStates,
-    step1: arStep1,
-    step2: arStep2,
-    step3: arStep3,
+  [LANGUAGES.ARABIC]: {
+    [TRANSLATION_NAMESPACES.COMMON]: arCommon,
+    [TRANSLATION_NAMESPACES.COUNTRIES]: arCountries,
+    [TRANSLATION_NAMESPACES.STATES]: arStates,
+    [TRANSLATION_NAMESPACES.STEP1]: arStep1,
+    [TRANSLATION_NAMESPACES.STEP2]: arStep2,
+    [TRANSLATION_NAMESPACES.STEP3]: arStep3,
   },
 };
 
-export const namespaces = ['common', 'countries', 'states', 'step1', 'step2', 'step3'] as const;
+export const namespaces = [
+  TRANSLATION_NAMESPACES.COMMON,
+  TRANSLATION_NAMESPACES.COUNTRIES,
+  TRANSLATION_NAMESPACES.STATES,
+  TRANSLATION_NAMESPACES.STEP1,
+  TRANSLATION_NAMESPACES.STEP2,
+  TRANSLATION_NAMESPACES.STEP3,
+] as const;

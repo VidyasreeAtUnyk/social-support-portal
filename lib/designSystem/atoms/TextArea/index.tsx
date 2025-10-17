@@ -4,12 +4,12 @@ import { TextField, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
 
-export interface CustomTextAreaProps extends Omit<TextFieldProps, 'multiline'> {
+export interface CustomTextAreaProps extends Omit<TextFieldProps, 'multiline' | 'size'> {
   /**
    * TextArea size
    * @default 'medium'
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
   /**
    * TextArea variant
    * @default 'outlined'
@@ -61,83 +61,88 @@ export interface CustomTextAreaProps extends Omit<TextFieldProps, 'multiline'> {
    * @default true
    */
   resizable?: boolean;
+  /**
+   * Maximum character limit
+   */
+  maxLength?: number;
+  /**
+   * Whether to show character count
+   * @default false
+   */
+  showCharCount?: boolean;
 }
 
-const StyledTextField = styled(TextField)<CustomTextAreaProps>(
-  ({ theme, size, resizable = true }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: theme.shape.borderRadius,
-      transition: 'all 0.2s ease-in-out',
-      ...(size === 'small' && {
-        fontSize: '0.875rem',
-        '& .MuiOutlinedInput-input': {
-          padding: '8px 12px',
-        },
-      }),
-      ...(size === 'medium' && {
-        fontSize: '1rem',
-        '& .MuiOutlinedInput-input': {
-          padding: '12px 14px',
-        },
-      }),
-      ...(size === 'large' && {
-        fontSize: '1.125rem',
-        '& .MuiOutlinedInput-input': {
-          padding: '16px 14px',
-        },
-      }),
-      '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: theme.palette.primary.main,
+interface StyledTextFieldProps {
+  size?: 'small' | 'medium';
+  resizable?: boolean;
+}
+
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => !['size', 'resizable'].includes(prop as string),
+})<StyledTextFieldProps>(({ theme, size, resizable = true }) => ({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: theme.shape.borderRadius,
+    transition: 'all 0.2s ease-in-out',
+    ...(size === 'small' && {
+      fontSize: '0.875rem',
+      '& .MuiOutlinedInput-input': {
+        padding: '8px 12px',
       },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderWidth: 2,
+    }),
+    ...(size === 'medium' && {
+      fontSize: '1rem',
+      '& .MuiOutlinedInput-input': {
+        padding: '12px 14px',
       },
+    }),
+    // no 'large' size; use medium defaults
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.primary.main,
     },
-    '& .MuiInputLabel-root': {
-      ...(size === 'small' && {
-        fontSize: '0.875rem',
-      }),
-      ...(size === 'medium' && {
-        fontSize: '1rem',
-      }),
-      ...(size === 'large' && {
-        fontSize: '1.125rem',
-      }),
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderWidth: 2,
     },
-    '& .MuiFormHelperText-root': {
-      marginLeft: 0,
-      marginTop: 4,
-      ...(size === 'small' && {
-        fontSize: '0.75rem',
-      }),
-      ...(size === 'medium' && {
-        fontSize: '0.875rem',
-      }),
-      ...(size === 'large' && {
-        fontSize: '1rem',
-      }),
-    },
-    '& .MuiOutlinedInput-input': {
-      resize: resizable ? 'vertical' : 'none',
-      minHeight: 'auto',
-    },
-  })
-);
+  },
+  '& .MuiInputLabel-root': {
+    ...(size === 'small' && {
+      fontSize: '0.875rem',
+    }),
+    ...(size === 'medium' && {
+      fontSize: '1rem',
+    }),
+    // no 'large'
+  },
+  '& .MuiFormHelperText-root': {
+    marginLeft: 0,
+    marginTop: 4,
+    ...(size === 'small' && {
+      fontSize: '0.75rem',
+    }),
+    ...(size === 'medium' && {
+      fontSize: '0.875rem',
+    }),
+    // no 'large'
+  },
+  '& .MuiOutlinedInput-input': {
+    resize: resizable ? 'vertical' : 'none',
+    minHeight: 'auto',
+  },
+}));
 
 /**
  * TextArea component with consistent styling and validation states
- * 
+ *
  * @example
  * ```tsx
- * <TextArea 
- *   label="Description" 
+ * <TextArea
+ *   label="Description"
  *   placeholder="Enter your description"
  *   rows={4}
  *   required
  * />
- * 
- * <TextArea 
- *   label="Comments" 
+ *
+ * <TextArea
+ *   label="Comments"
  *   rows={6}
  *   error={hasError}
  *   helperText={errorMessage}
@@ -146,14 +151,37 @@ const StyledTextField = styled(TextField)<CustomTextAreaProps>(
  * ```
  */
 export const TextArea = forwardRef<HTMLDivElement, CustomTextAreaProps>(
-  ({ 
-    size = 'medium', 
-    variant = 'outlined', 
-    fullWidth = true,
-    rows = 4,
-    resizable = true,
-    ...props 
-  }, ref) => {
+  (
+    {
+      size = 'medium',
+      variant = 'outlined',
+      fullWidth = true,
+      rows = 4,
+      resizable = true,
+      maxLength,
+      showCharCount = false,
+      value,
+      helperText,
+      ...props
+    },
+    ref,
+  ) => {
+    const currentLength = typeof value === 'string' ? value.length : 0;
+    
+    // Prioritize error messages over character count
+    const hasError = props.error || (helperText && helperText !== ' ');
+    const displayHelperText = hasError 
+      ? helperText 
+      : showCharCount && maxLength 
+        ? `${currentLength}/${maxLength}`
+        : helperText;
+
+    const helperTextColor = hasError 
+      ? 'error.main'
+      : showCharCount && maxLength && currentLength > maxLength * 0.9
+        ? 'warning.main'
+        : 'text.secondary';
+
     return (
       <StyledTextField
         ref={ref}
@@ -163,10 +191,27 @@ export const TextArea = forwardRef<HTMLDivElement, CustomTextAreaProps>(
         multiline
         rows={rows}
         resizable={resizable}
+        value={value}
+        helperText={displayHelperText}
+        inputProps={{
+          maxLength,
+          ...props.inputProps,
+        }}
+        FormHelperTextProps={{
+          sx: {
+            ...(showCharCount && !hasError ? {
+              textAlign: 'right',
+              fontSize: '0.75rem',
+            } : {}),
+            color: helperTextColor,
+            ...props.FormHelperTextProps?.sx,
+          },
+          ...props.FormHelperTextProps,
+        }}
         {...props}
       />
     );
-  }
+  },
 );
 
 TextArea.displayName = 'TextArea';

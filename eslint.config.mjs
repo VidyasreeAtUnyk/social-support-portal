@@ -1,6 +1,8 @@
+import { FlatCompat } from '@eslint/eslintrc';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
+import prettierPlugin from 'eslint-plugin-prettier';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,18 +12,32 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Top-level ignores for generated/build artifacts
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/out/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/coverage-final.json',
+      '**/lcov-report/**',
+      'next-env.d.ts',
+      '**/public/**',
+    ],
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
-    ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+    plugins: {
+      jsdoc: jsdocPlugin,
+      prettier: prettierPlugin,
+    },
     rules: {
       // 🔹 JSDoc
-      'jsdoc/require-jsdoc': 'warn',
-      'jsdoc/require-param': 'warn',
-      'jsdoc/require-returns': 'warn',
-
-      // 🔹 Tailwind
-      'tailwindcss/classnames-order': 'warn',
-      'tailwindcss/no-contradicting-classname': 'warn',
+      'jsdoc/require-jsdoc': 'off',
+      'jsdoc/require-param': 'off',
+      'jsdoc/require-returns': 'off',
 
       // 🔹 Prettier
       'prettier/prettier': [
@@ -33,6 +49,25 @@ const eslintConfig = [
           endOfLine: 'auto',
         },
       ],
+    },
+  },
+  // Disable linting for generated Next types entirely
+  {
+    files: ['.next/**/*.ts'],
+    rules: {
+      'prettier/prettier': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-wrapper-object-types': 'off',
+      '@typescript-eslint/triple-slash-reference': 'off',
+    },
+  },
+  // Relax strict any usage in our test and mock files
+  {
+    files: ['**/__tests__/**', '**/mock*.ts', '**/mock*/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];

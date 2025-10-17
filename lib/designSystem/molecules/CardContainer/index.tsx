@@ -5,7 +5,7 @@ import { Box, Card, CardActions, CardContent, CardHeader, CardProps } from '@mui
 import { styled } from '@mui/material/styles';
 import { ReactNode, forwardRef } from 'react';
 
-export interface CardContainerProps extends CardProps {
+export interface CardContainerProps extends Omit<CardProps, 'variant' | 'raised'> {
   /**
    * Card title
    */
@@ -30,7 +30,7 @@ export interface CardContainerProps extends CardProps {
    * Card variant
    * @default 'elevation'
    */
-  variant?: 'elevation' | 'outlined' | 'filled';
+  variant?: 'elevation' | 'outlined';
   /**
    * Card elevation level
    * @default 1
@@ -59,7 +59,7 @@ export interface CardContainerProps extends CardProps {
 
 const StyledCard = styled(Card)<CardContainerProps>(
   ({ theme, clickable, selected, size = 'medium' }) => ({
-    borderRadius: theme.shape.borderRadius * 1.5,
+    borderRadius: (theme.shape.borderRadius as number) * 1.5,
     transition: 'all 0.2s ease-in-out',
     ...(size === 'small' && {
       padding: theme.spacing(1),
@@ -67,9 +67,7 @@ const StyledCard = styled(Card)<CardContainerProps>(
     ...(size === 'medium' && {
       padding: theme.spacing(2),
     }),
-    ...(size === 'large' && {
-      padding: theme.spacing(3),
-    }),
+    // no 'large' size in MUI; keep small/medium
     ...(clickable && {
       cursor: 'pointer',
       '&:hover': {

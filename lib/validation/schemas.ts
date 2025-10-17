@@ -1,4 +1,6 @@
+import { DEFAULT_ALLOWED_COUNTRIES, DEFAULT_PHONE_COUNTRY } from '@lib/config/countries';
 import * as yup from 'yup';
+import { validatePhoneForYup } from './phoneValidation';
 
 // Step 1: Personal Information Validation Schema
 export const personalInfoSchema = yup.object({
@@ -16,11 +18,14 @@ export const personalInfoSchema = yup.object({
     .matches(/^[A-Za-z0-9]+$/, 'errors.nationalId.alphaneumeric'),
 
   dob: yup
-    .date()
-    .transform((value, originalValue) => (originalValue === '' ? undefined : value))
+    .string()
+    .transform((value) => (value === '' ? undefined : value))
     .required('errors.dob.required')
-    .max(new Date(), 'errors.dob.future')
-    .min(new Date(1900, 0, 1), 'errors.dob.min'),
+    .test('is-valid-date', 'errors.dob.invalid', (value) => {
+      if (!value) return false;
+      const date = new Date(value);
+      return !isNaN(date.getTime()) && date <= new Date() && date >= new Date(1900, 0, 1);
+    }),
 
   gender: yup
     .string()
@@ -38,9 +43,34 @@ export const personalInfoSchema = yup.object({
   phone: yup
     .string()
     .required('errors.phone.required')
-    .matches(/^[\+]?[1-9][\d]{0,15}$/, 'errors.phone.pattern'),
+    .test('phone-validation', 'errors.phone.invalid', function (value) {
+      if (!value) return true; // Let required() handle empty values
+
+      // Get the current form values to access the phone country
+      const formData = this.parent;
+      const phoneCountry = formData?.phoneCountry || DEFAULT_PHONE_COUNTRY;
+
+      const result = validatePhoneForYup(value, {
+        defaultCountry: phoneCountry,
+        strictMode: true,
+        allowNationalFormat: true,
+        allowedCountries: DEFAULT_ALLOWED_COUNTRIES,
+      });
+
+      if (!result.isValid) {
+        return this.createError({
+          message: result.errorKey || 'errors.phone.invalid',
+          path: this.path,
+        });
+      }
+
+      return true;
+    }),
 
   email: yup.string().required('errors.email.required').email('errors.email.invalid'),
+
+  // Phone number country (separate from address country)
+  phoneCountry: yup.string().optional(),
 });
 
 // Step 2: Family & Financial Information Validation Schema

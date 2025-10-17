@@ -1,3 +1,5 @@
+import { TRANSLATION_NAMESPACES } from '@lib/constants';
+
 export interface FieldOption {
   value: string;
   label: string;
@@ -12,6 +14,11 @@ export interface FieldConfig {
   options?: FieldOption[];
   dynamicOptions?: 'countries' | 'states';
   dependsOn?: string;
+  tooltip?: {
+    translationKey: string;
+    namespace?: string;
+    placement?: 'top' | 'bottom' | 'left' | 'right';
+  };
 }
 
 export const personalInfoForm = [
@@ -72,6 +79,11 @@ export const personalInfoForm = [
     required: true,
     dependsOn: 'country',
     dynamicOptions: 'states',
+    tooltip: {
+      translationKey: 'help.selectCountryFirst',
+      namespace: TRANSLATION_NAMESPACES.COMMON,
+      placement: 'top' as const,
+    },
   },
   {
     label: 'fields.country',
@@ -95,5 +107,10 @@ export const personalInfoForm = [
     type: 'tel',
     required: true,
     component: 'Input',
+    tooltip: {
+      translationKey: 'help.phoneFormat',
+      namespace: TRANSLATION_NAMESPACES.COMMON,
+      placement: 'top' as const,
+    },
   },
 ];

@@ -1,8 +1,9 @@
 'use client';
 
-import { Typography } from '@lib/designSystem/atoms/Typography';
+import { Typography } from '@lib/designSystem/atoms';
 import { FormActions, StepProgressBar } from '@lib/designSystem/molecules';
-import { Box, BoxProps, Container, Paper } from '@mui/material';
+import { designTokens } from '@lib/designSystem/tokens';
+import { Box, BoxProps, Container, Paper, alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ReactNode, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -102,43 +103,72 @@ export interface FormWizardTemplateProps extends BoxProps {
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
-const StyledContainer = styled(Container)<FormWizardTemplateProps>(
+interface StyledContainerProps {
+  variant?: 'default' | 'compact' | 'detailed';
+}
+
+const StyledContainer = styled(Container)<StyledContainerProps>(
   ({ theme, variant = 'default' }) => ({
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: designTokens.spacing.xxxl,
+    paddingBottom: designTokens.spacing.xxxl,
     ...(variant === 'compact' && {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
+      paddingTop: designTokens.spacing.xl,
+      paddingBottom: designTokens.spacing.xl,
     }),
     ...(variant === 'detailed' && {
-      paddingTop: theme.spacing(6),
-      paddingBottom: theme.spacing(6),
+      paddingTop: designTokens.spacing.xxxl * 1.5,
+      paddingBottom: designTokens.spacing.xxxl * 1.5,
     }),
   }),
 );
 
 const FormHeader = styled(Box)(({ theme }) => ({
   textAlign: 'center',
-  marginBottom: theme.spacing(2),
+  marginBottom: designTokens.spacing.xl,
+  position: 'relative',
+  // '&::after': {
+  //   content: '""',
+  //   position: 'absolute',
+  //   bottom: -designTokens.spacing.md,
+  //   left: '50%',
+  //   transform: 'translateX(-50%)',
+  //   width: designTokens.spacing.xxxl,
+  //   height: 4,
+  //   background: designTokens.gradients.primary,
+  //   borderRadius: designTokens.borderRadius.full,
+  // },
 }));
 
 const FormContent = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius * 2,
-  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+  padding: designTokens.spacing.xl,
+  borderRadius: designTokens.borderRadius.xl,
+  boxShadow: designTokens.shadows.xl,
+  background: alpha(theme.palette.background.paper, 0.95),
+  backdropFilter: 'blur(10px)',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 4,
+    background: designTokens.gradients.primary,
+  },
 }));
 
 const StepIndicator = styled(Box)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: theme.spacing(1),
-  // backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.secondary,
-  padding: theme.spacing(1, 2),
-  borderRadius: theme.shape.borderRadius * 2,
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  marginBottom: theme.spacing(2),
+  gap: designTokens.spacing.sm,
+  color: theme.palette.primary.main,
+  padding: 0,
+  fontSize: designTokens.typography.fontSize.md,
+  fontWeight: designTokens.typography.fontWeight.semibold,
+  marginTop: designTokens.spacing.md,
+  marginBottom: 0,
 }));
 
 /**
@@ -192,13 +222,32 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
     const { t } = useTranslation(['common']);
 
     return (
-      <StyledContainer ref={ref} maxWidth={maxWidth} variant={variant} {...props}>
+      <StyledContainer ref={ref} maxWidth={maxWidth} variant={variant}>
         <FormHeader>
-          <Typography variant="h3" color="textPrimary" sx={{ mb: 1 }}>
+          <Typography 
+            variant="h2" 
+            color="textPrimary" 
+            sx={{ 
+              mb: 2,
+              fontWeight: designTokens.typography.fontWeight.bold,
+              fontSize: designTokens.typography.fontSize['4xl'],
+              background: designTokens.gradients.primary,
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             {title}
           </Typography>
           {subtitle && (
-            <Typography variant="h6" color="textSecondary">
+            <Typography 
+              variant="h5" 
+              color="textSecondary"
+              sx={{
+                fontWeight: designTokens.typography.fontWeight.medium,
+                fontSize: designTokens.typography.fontSize.xl,
+              }}
+            >
               {subtitle}
             </Typography>
           )}

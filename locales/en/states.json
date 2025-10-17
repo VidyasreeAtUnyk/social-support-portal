@@ -1,4 +1,12 @@
 {
-  "IN": ["Tamil Nadu", "Karnataka", "Maharashtra"],
-  "AE": ["Dubai", "Abu Dhabi", "Sharjah"]
+  "IN": [
+    { "code": "TN", "name": "Tamil Nadu" },
+    { "code": "KA", "name": "Karnataka" },
+    { "code": "MH", "name": "Maharashtra" }
+  ],
+  "AE": [
+    { "code": "DXB", "name": "Dubai" },
+    { "code": "AUH", "name": "Abu Dhabi" },
+    { "code": "SHJ", "name": "Sharjah" }
+  ]
 }

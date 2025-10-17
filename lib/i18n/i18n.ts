@@ -1,3 +1,4 @@
+import { DEFAULT_NAMESPACE, FALLBACK_LANGUAGE } from '@lib/constants';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
@@ -8,10 +9,10 @@ i18n
   .use(initReactI18next)
   .init({
     // remove lng: initialLng
-    fallbackLng: 'en',
-    debug: true,
+    fallbackLng: FALLBACK_LANGUAGE,
+    debug: false,
     ns: namespaces,
-    defaultNS: 'common',
+    defaultNS: DEFAULT_NAMESPACE,
     interpolation: { escapeValue: false },
     resources: locales,
     detection: {

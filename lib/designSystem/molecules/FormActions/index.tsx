@@ -79,27 +79,52 @@ export interface FormActionsProps extends BoxProps {
   showDivider?: boolean;
 }
 
-const StyledFormActions = styled(Box)<FormActionsProps>(({ theme, showDivider = true }) => ({
+interface StyledFormActionsProps {
+  showDivider?: boolean;
+}
+
+const StyledFormActions = styled(Box, {
+  shouldForwardProp: (prop) => !['showDivider'].includes(prop as string),
+})<StyledFormActionsProps>(({ theme, showDivider = true }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
-  padding: theme.spacing(3),
+  paddingTop: theme.spacing(3),
+  paddingBottom: theme.spacing(3),
+  flexWrap: 'wrap',
   ...(showDivider && {
     borderTop: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(2),
   }),
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
 }));
 
 const LeftActions = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    justifyContent: 'center',
+  },
 }));
 
 const RightActions = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    justifyContent: 'center',
+  },
 }));
 
 /**
@@ -174,7 +199,7 @@ export const FormActions = forwardRef<HTMLDivElement, FormActionsProps>(
             )}
             {cancelButton && (
               <Button
-                variant="text"
+                variant="outlined"
                 color="secondary"
                 onClick={cancelButton.onClick}
                 disabled={cancelButton.disabled}

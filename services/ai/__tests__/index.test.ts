@@ -44,7 +44,7 @@ describe('getAISuggestion (modularized)', () => {
 
     const result = await getAISuggestion({ fieldKey, prompt, config: AI_CONFIG });
 
-    expect(buildAIMessages).toHaveBeenCalledWith(fieldKey, prompt, AI_CONFIG);
+    expect(buildAIMessages).toHaveBeenCalledWith(fieldKey, prompt, 'en', AI_CONFIG);
     expect(fetchAISuggestion).toHaveBeenCalledWith(mockMessages);
     expect(logAISuggestion).toHaveBeenCalledWith(
       fieldKey,
@@ -138,5 +138,13 @@ describe('getAISuggestion (modularized)', () => {
 
     await getAISuggestion({ fieldKey, prompt });
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('passes language parameter to buildAIMessages', async () => {
+    (fetchAISuggestion as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+    await getAISuggestion({ fieldKey, prompt, language: 'ar', config: AI_CONFIG });
+
+    expect(buildAIMessages).toHaveBeenCalledWith(fieldKey, prompt, 'ar', AI_CONFIG);
   });
 });

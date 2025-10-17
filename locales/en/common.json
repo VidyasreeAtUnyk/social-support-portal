@@ -28,5 +28,73 @@
   "stepInfo": "Step {{currentStep}} of {{totalSteps}}",
   "aiAssistantTitle": "AI Writing Assistant",
   "helpDescription": "Describe what you need help with",
-  "aiPlaceholder": "e.g., I am unemployed with no income. Help me describe my financial hardship."
+  "aiPlaceholder": "e.g., I am unemployed with no income. Help me describe my financial hardship.",
+  "security": {
+    "piiWarning": "⚠️ Privacy Notice: Do not enter personally identifiable information (PII) such as full names, addresses, phone numbers, or ID numbers in AI prompts. This information will be processed by external AI services.",
+    "dataEncryption": "🔒 Your data is encrypted and securely transmitted",
+    "privacyPolicy": "Privacy Policy",
+    "dataRetention": "Data Retention: Your information is stored securely and will be retained according to our privacy policy",
+    "aiDisclaimer": "AI Assistant Notice: This feature uses external AI services. Do not share sensitive personal information in prompts.",
+    "secureForm": "Secure Form: All data is encrypted during transmission and storage",
+    "encryptedForm": "🔒 Secure Form: Data is encrypted with AES-256 before transmission",
+    "httpsOnly": "⚠️ Secure Form: Using HTTPS (client-side encryption not available)",
+    "encryptedTitle": "🔒 Data Encrypted with AES-256",
+    "encryptedDescription": "Your sensitive data is encrypted client-side using AES-256-GCM before transmission. Only encrypted data is sent to our servers.",
+    "httpsDescription": "Your data is transmitted securely via HTTPS. Client-side encryption is not available in this browser."
+  },
+  "countries": {
+    "uae": "United Arab Emirates",
+    "india": "India",
+    "usa": "United States",
+    "uk": "United Kingdom",
+    "saudi": "Saudi Arabia",
+    "kuwait": "Kuwait",
+    "qatar": "Qatar",
+    "bahrain": "Bahrain",
+    "oman": "Oman",
+    "jordan": "Jordan",
+    "lebanon": "Lebanon",
+    "egypt": "Egypt"
+  },
+  "phone": {
+    "placeholder": "Enter your phone number",
+    "errors": {
+      "invalidFormat": "Invalid phone number format",
+      "notValid": "Phone number is not valid",
+      "mobileRequired": "Mobile number required",
+      "parsingError": "Error parsing phone number",
+      "countryNotAllowed": "Phone number from {{country}} is not allowed"
+    }
+  },
+  "help": {
+    "selectCountryFirst": "Please select a country first to load available states/provinces",
+    "fieldRequired": "This field is required",
+    "phoneFormat": "Enter your phone number without the country code",
+    "aiSuggestion": "AI can help you write better descriptions for your situation"
+  },
+  "toast": {
+    "success": {
+      "formSubmitted": "Form submitted successfully!",
+      "formSubmittedEncrypted": "Form submitted successfully! Data was encrypted.",
+      "formSubmittedNoEncryption": "Form submitted successfully! Note: Encryption not available.",
+      "draftSaved": "Draft saved successfully!"
+    },
+    "error": {
+      "submissionFailed": "Submission failed!",
+      "aiGenerationFailed": "AI generation failed",
+      "genericError": "An error occurred"
+    },
+    "warning": {
+      "validationFailed": "Please check the form for errors"
+    },
+    "info": {
+      "processing": "Processing your request..."
+    }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, we couldn't find the page you're looking for. It might have been moved, deleted, or you may have entered the wrong URL.",
+    "goHome": "Go Home",
+    "goBack": "Go Back"
+  }
 }

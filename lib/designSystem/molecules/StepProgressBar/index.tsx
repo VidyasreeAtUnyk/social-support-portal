@@ -41,7 +41,11 @@ export interface StepProgressBarProps extends BoxProps {
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 }
 
-const StyledProgressContainer = styled(Box)<StepProgressBarProps>(
+interface StyledProgressContainerProps {
+  variant?: 'default' | 'compact' | 'detailed';
+}
+
+const StyledProgressContainer = styled(Box)<StyledProgressContainerProps>(
   ({ theme, variant = 'default' }) => ({
     width: '100%',
     ...(variant === 'compact' && {
@@ -72,25 +76,31 @@ const StepIndicators = styled(Box)(({ theme }) => ({
   flex: 1,
 }));
 
-const StepIndicator = styled(Box)<{ active: boolean; completed: boolean; placement: number }>(
-  ({ theme, active, completed, placement }) => ({
-    position: 'absolute',
-    width: 12,
-    height: 12,
-    borderRadius: '50%',
-    left: `calc(${placement}% - 6px)`,
-    top: 0,
-    backgroundColor: completed
-      ? theme.palette.success.main
-      : active
-        ? theme.palette.primary.main
-        : theme.palette.grey[300],
-    transition: 'all 0.3s ease-in-out',
-    ...(active && {
-      boxShadow: `0 0 0 4px ${theme.palette.primary.main}20`,
-    }),
+interface StepIndicatorProps {
+  active: boolean;
+  completed: boolean;
+  placement: number;
+}
+
+const StepIndicator = styled(Box, {
+  shouldForwardProp: (prop) => !['active', 'completed', 'placement'].includes(prop as string),
+})<StepIndicatorProps>(({ theme, active, completed, placement }) => ({
+  position: 'absolute',
+  width: 12,
+  height: 12,
+  borderRadius: '50%',
+  left: `calc(${placement}% - 6px)`,
+  top: 0,
+  backgroundColor: completed
+    ? theme.palette.success.main
+    : active
+      ? theme.palette.primary.main
+      : theme.palette.grey[300],
+  transition: 'all 0.3s ease-in-out',
+  ...(active && {
+    boxShadow: `0 0 0 4px ${theme.palette.primary.main}20`,
   }),
-);
+}));
 
 const ProgressBar = styled(LinearProgress)(({ theme }) => ({
   height: 8,
@@ -108,19 +118,24 @@ const StepLabels = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-const StepLabel = styled(Typography)<{ active: boolean; completed: boolean }>(
-  ({ theme, active, completed }) => ({
-    fontSize: '0.75rem',
-    textAlign: 'center',
-    color: completed
-      ? theme.palette.success.main
-      : active
-        ? theme.palette.primary.main
-        : theme.palette.text.secondary,
-    fontWeight: active ? 600 : 400,
-    transition: 'all 0.3s ease-in-out',
-  }),
-);
+interface StepLabelProps {
+  active: boolean;
+  completed: boolean;
+}
+
+const StepLabel = styled(Typography, {
+  shouldForwardProp: (prop) => !['active', 'completed'].includes(prop as string),
+})<StepLabelProps>(({ theme, active, completed }) => ({
+  fontSize: '1rem',
+  textAlign: 'center',
+  color: completed
+    ? theme.palette.success.main
+    : active
+      ? theme.palette.primary.main
+      : theme.palette.text.secondary,
+  fontWeight: active ? 600 : 400,
+  transition: 'all 0.3s ease-in-out',
+}));
 
 /**
  * StepProgressBar component for showing form progress
@@ -162,11 +177,11 @@ export const StepProgressBar = forwardRef<HTMLDivElement, StepProgressBarProps>(
     return (
       <StyledProgressContainer ref={ref} variant={variant} {...props}>
         <ProgressHeader>
-          <Typography variant="subtitle2" color="textPrimary">
+          <Typography variant="subtitle1" color="textPrimary" sx={{ fontSize: '1rem', fontWeight: 600 }}>
             {t('common:progress')}
           </Typography>
           {showPercentage && (
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body1" color="textSecondary" sx={{ fontSize: '0.9rem', fontWeight: 500 }}>
               {Math.round(progress)}%
             </Typography>
           )}

@@ -14,7 +14,10 @@
     "helpMeWrite": "Help Me Write"
   },
   "descriptions": {
-    "aiHelp": "Our AI assistant can help you write a clear and compelling description of your situation."
+    "aiHelp": "Our AI assistant can help you write a clear and compelling description of your situation.",
+    "financialSituation": "Please provide details about your current financial situation, including income, expenses, debts, and any financial challenges you're facing.",
+    "employmentCircumstances": "Describe your current employment status, job situation, income stability, and any work-related challenges.",
+    "reasonForApplying": "Explain why you are applying for assistance and how this support would help you and your family."
   },
   "errors": {
     "financialSituation": {

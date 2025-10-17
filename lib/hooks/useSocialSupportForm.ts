@@ -30,7 +30,7 @@ interface RootState {
 }
 
 export interface FormData {
-  personalInfo: PersonalInfoFormData;
+  personalInfo: Omit<PersonalInfoFormData, 'dob'> & { dob: string };
   familyInfo: FamilyInfoFormData;
   situationDescriptions: SituationDescriptionsFormData;
 }
@@ -53,9 +53,10 @@ export const useSocialSupportForm = () => {
   // Sync React Hook Form → Redux (auto on every change)
   useEffect(() => {
     const subscription = form.watch((data) => {
-      dispatch(updatePersonalInfo(data.personalInfo));
-      dispatch(updateFamilyInfo(data.familyInfo));
-      dispatch(updateSituationDescriptions(data.situationDescriptions));
+      if (data?.personalInfo) dispatch(updatePersonalInfo(data.personalInfo));
+      if (data?.familyInfo) dispatch(updateFamilyInfo(data.familyInfo));
+      if (data?.situationDescriptions)
+        dispatch(updateSituationDescriptions(data.situationDescriptions));
     });
     return () => subscription.unsubscribe();
   }, [form, dispatch]);
@@ -95,7 +96,7 @@ export const useSocialSupportForm = () => {
             // Translate the message using `t`
             const translatedMessage = t(err.message as string, { ns: 'step' + step }) || '';
 
-            form.setError(`${prefix}.${err.path}` as any, {
+            form.setError(`${prefix}.${err.path}` as unknown as keyof FormData, {
               type: 'manual',
               message: translatedMessage,
             });

@@ -17,7 +17,7 @@
     "nationalId": "Enter your national ID",
     "address": "Enter your address",
     "city": "Enter your city",
-    "phone": "+971 xxx xxx xxx",
+    "phone": "xxx xxx xxx",
     "email": "Enter your email address"
   },
   "options": {
@@ -64,7 +64,7 @@
     },
     "phone": {
       "required": "Phone number is required",
-      "pattern": "Please enter a valid phone number"
+      "invalid": "Please enter a valid phone number (e.g., +971 50 123 4567 or 050 123 4567)"
     },
     "email": {
       "required": "Email is required",
