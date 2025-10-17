@@ -19,6 +19,80 @@ const mockCrypto = global.crypto as any;
  * - testDecryption() - Tests form data encryption/decryption
  */
 
+// Browser console test functions (for development/testing)
+export const testEncryption = async () => {
+  console.log('🔒 Testing basic encryption/decryption...');
+  
+  try {
+    if (!isEncryptionSupported()) {
+      console.log('❌ Encryption not supported in this environment');
+      return;
+    }
+
+    const testData = 'Hello, World!';
+    console.log('📝 Original data:', testData);
+
+    const key = await generateEncryptionKey();
+    console.log('🔑 Generated encryption key');
+
+    const encrypted = await encryptData(testData, key);
+    console.log('🔒 Encrypted data:', encrypted);
+
+    const decrypted = await decryptData(encrypted.encryptedData, encrypted.iv, key);
+    console.log('🔓 Decrypted data:', decrypted);
+
+    if (testData === decrypted) {
+      console.log('✅ Encryption/Decryption test PASSED');
+    } else {
+      console.log('❌ Encryption/Decryption test FAILED');
+    }
+  } catch (error) {
+    console.error('❌ Encryption test failed:', error);
+  }
+};
+
+export const testDecryption = async () => {
+  console.log('🔓 Testing form data encryption/decryption...');
+  
+  try {
+    if (!isEncryptionSupported()) {
+      console.log('❌ Encryption not supported in this environment');
+      return;
+    }
+
+    const testFormData = {
+      personalInfo: {
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1234567890',
+      },
+      familyInfo: {
+        spouseName: 'Jane Doe',
+        childrenCount: 2,
+      },
+    };
+
+    console.log('📝 Original form data:', testFormData);
+
+    const key = await generateEncryptionKey();
+    console.log('🔑 Generated encryption key');
+
+    const encrypted = await encryptFormData(testFormData, key);
+    console.log('🔒 Encrypted form data:', encrypted);
+
+    const decrypted = await decryptFormData(encrypted, key);
+    console.log('🔓 Decrypted form data:', decrypted);
+
+    if (JSON.stringify(testFormData) === JSON.stringify(decrypted)) {
+      console.log('✅ Form data encryption/decryption test PASSED');
+    } else {
+      console.log('❌ Form data encryption/decryption test FAILED');
+    }
+  } catch (error) {
+    console.error('❌ Form data encryption test failed:', error);
+  }
+};
+
 describe('Encryption Utilities', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -30,7 +104,7 @@ describe('Encryption Utilities', () => {
     mockCrypto.subtle.importKey.mockResolvedValue({} as CryptoKey);
     mockCrypto.subtle.exportKey.mockResolvedValue(new ArrayBuffer(32));
     mockCrypto.subtle.digest.mockResolvedValue(new ArrayBuffer(32));
-    mockCrypto.getRandomValues.mockImplementation((arr) => {
+    mockCrypto.getRandomValues.mockImplementation((arr: any) => {
       for (let i = 0; i < arr.length; i++) {
         arr[i] = Math.floor(Math.random() * 256);
       }

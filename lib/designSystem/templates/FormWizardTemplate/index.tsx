@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography } from '@lib/designSystem/atoms/Typography';
+import { Typography } from '@lib/designSystem/atoms';
 import { FormActions, StepProgressBar } from '@lib/designSystem/molecules';
 import { designTokens } from '@lib/designSystem/tokens';
 import { Box, BoxProps, Container, Paper, alpha } from '@mui/material';

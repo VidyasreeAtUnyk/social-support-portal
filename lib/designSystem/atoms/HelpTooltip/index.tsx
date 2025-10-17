@@ -44,6 +44,10 @@ export interface HelpTooltipProps extends Omit<TooltipProps, 'title' | 'children
    * Custom icon component
    */
   icon?: React.ReactNode;
+  /**
+   * Children (optional when using icon)
+   */
+  children?: React.ReactNode;
 }
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -117,7 +121,7 @@ export const HelpTooltip = forwardRef<HTMLDivElement, HelpTooltipProps>(
           arrow
           {...props}
         >
-          <span>{props.children}</span>
+          <span>{props.children || <span />}</span>
         </StyledTooltip>
       );
     }
