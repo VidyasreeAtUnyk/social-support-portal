@@ -44,7 +44,7 @@ export const Step2Form = ({ form }: Step2FormProps) => {
       }}
     >
       <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {familyInfoForm.map((field) => (
             <Box
               key={field.name}

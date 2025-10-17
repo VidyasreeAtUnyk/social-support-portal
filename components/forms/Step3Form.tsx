@@ -1,16 +1,15 @@
 'use client';
 
-// import { AI_CONFIG } from '@lib/ai/aiConfig';
+import { AI_CONFIG } from '@lib/ai/aiConfig';
 import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3Form';
-// import { useToast } from '@lib/context/ToastContext';
+import { useToast } from '@lib/context/ToastContext';
 import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { Box, Button } from '@mui/material';
-// import { getAISuggestion } from '@services/ai';
-// import { AISuggestionResponse } from '@services/ai/types';
-import { mockAISuggestion } from '@services/ai/mockAiSuggestion';
+import { getAISuggestion } from '@services/ai';
+import { AISuggestionResponse } from '@services/ai/types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +20,7 @@ interface Step3FormProps {
 export const Step3Form = ({ form }: Step3FormProps) => {
   const { t, i18n } = useTranslation(['step3', 'common']);
   const isRTL = i18n.language === 'ar';
-  // const { showToast } = useToast();
+  const { showToast } = useToast();
 
   const [helpBoxOpen, setHelpBoxOpen] = useState<{
     financialSituation: boolean;
@@ -52,53 +51,54 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   };
 
   // A call to mack API requests when api key times out
-  const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen) => {
-    try {
-      setLoadingField((prev) => ({ ...prev, [field]: true }));
-
-      const prompt = form.getValues(`situationDescriptions.${field}` as const);
-      const response = await mockAISuggestion(field, prompt || `Help me write ${field}`);
-
-      return response;
-    } finally {
-      setLoadingField((prev) => ({ ...prev, [field]: false }));
-    }
-  };
-
-  // const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen, prompt: string) => {
-  //   setLoadingField((prev) => ({ ...prev, [field]: true }));
-
+  // const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen) => {
   //   try {
-  //     const data: AISuggestionResponse = await getAISuggestion({
-  //       fieldKey: field,
-  //       prompt: prompt,
-  //       config: AI_CONFIG,
-  //     });
-  //     // setSuggestion(data.choices[0].message.content);
-  //     return data.choices?.[0]?.message?.content || '';
-  //   } catch (err: any) {
-  //     // setSuggestion(`Error: ${err.message}`);
-  //     showToast({ message: `Error: ${err.message}`, severity: 'error' });
-  //     throw err;
+  //     setLoadingField((prev) => ({ ...prev, [field]: true }));
+
+  //     const prompt = form.getValues(`situationDescriptions.${field}` as const);
+  //     const response = await mockAISuggestion(field, prompt || `Help me write ${field}`);
+
+  //     return response;
   //   } finally {
   //     setLoadingField((prev) => ({ ...prev, [field]: false }));
   //   }
-
-  //   //   const response = await getAISuggestion({
-  //   //     fieldKey: field,
-  //   //     prompt: prompt || `Help me write ${field}`,
-  //   //   });
-  //   //   return response.choices?.[0]?.message?.content || '';
-  //   // } finally {
-  //   //   setLoadingField((prev) => ({ ...prev, [field]: false }));
-  //   // }
   // };
 
-  // const fields: Array<keyof typeof helpBoxOpen> = [
-  //   'financialSituation',
-  //   'employmentCircumstances',
-  //   'reasonForApplying',
-  // ];
+  const handleRequestSuggestion = async (field: keyof typeof helpBoxOpen, prompt: string) => {
+    setLoadingField((prev) => ({ ...prev, [field]: true }));
+
+    try {
+      const data: AISuggestionResponse = await getAISuggestion({
+        fieldKey: field,
+        prompt: prompt,
+        language: i18n.language,
+        config: AI_CONFIG,
+      });
+      // setSuggestion(data.choices[0].message.content);
+      return data.choices?.[0]?.message?.content || '';
+    } catch (err: any) {
+      // setSuggestion(`Error: ${err.message}`);
+      showToast({ message: `Error: ${err.message}`, severity: 'error' });
+      throw err;
+    } finally {
+      setLoadingField((prev) => ({ ...prev, [field]: false }));
+    }
+
+    //   const response = await getAISuggestion({
+    //     fieldKey: field,
+    //     prompt: prompt || `Help me write ${field}`,
+    //   });
+    //   return response.choices?.[0]?.message?.content || '';
+    // } finally {
+    //   setLoadingField((prev) => ({ ...prev, [field]: false }));
+    // }
+  };
+
+  const fields: Array<keyof typeof helpBoxOpen> = [
+    'financialSituation',
+    'employmentCircumstances',
+    'reasonForApplying',
+  ];
 
   return (
     <ErrorBoundary
@@ -109,7 +109,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
       }}
     >
       <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {situationDescriptionsForm.map((field: Step3FieldConfig) => (
             <Box key={field.name} sx={{ width: '100%' }}>
               <FormField
@@ -119,16 +119,18 @@ export const Step3Form = ({ form }: Step3FormProps) => {
                 name={`situationDescriptions.${field.name}`}
               >
                 {({ value, onChange, error, helperText }) => (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     <TextArea
-                      rows={6}
+                      rows={4}
                       value={value}
                       onChange={onChange}
                       error={error}
                       helperText={helperText || ' '} // to maintain height
                       placeholder={t(field.placeholder, { ns: 'step3' })}
+                      maxLength={1000}
+                      showCharCount={true}
                     />
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.25 }}>
                       <Button
                         size="small"
                         onClick={() => openHelpBox(field.name as keyof typeof helpBoxOpen)}
@@ -147,8 +149,8 @@ export const Step3Form = ({ form }: Step3FormProps) => {
                 value={form.getValues(`situationDescriptions.${field.name}` as any)}
                 loading={loadingField[field.name as keyof typeof loadingField]}
                 onClose={() => closeHelpBox(field.name as keyof typeof helpBoxOpen)}
-                onRequestSuggestion={() =>
-                  handleRequestSuggestion(field.name as keyof typeof loadingField)
+                onRequestSuggestion={(prompt) =>
+                  handleRequestSuggestion(field.name as keyof typeof loadingField, prompt)
                 }
                 onAcceptSuggestion={(val) =>
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any

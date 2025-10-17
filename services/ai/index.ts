@@ -7,17 +7,19 @@ import { AISuggestionResponse } from './types';
 interface AIRequestOptions {
   fieldKey: FieldKey;
   prompt: string;
+  language?: string;
   config?: AISuggestionConfig;
 }
 
 export const getAISuggestion = async ({
   fieldKey,
   prompt,
+  language = 'en',
   config = AI_CONFIG,
 }: AIRequestOptions): Promise<AISuggestionResponse> => {
   if (!prompt?.trim()) throw new Error('Prompt cannot be empty');
 
-  const messages = buildAIMessages(fieldKey, prompt, config);
+  const messages = buildAIMessages(fieldKey, prompt, language, config);
 
   try {
     const data = await fetchAISuggestion(messages);

@@ -90,22 +90,39 @@ const StyledFormActions = styled(Box, {
   alignItems: 'center',
   gap: theme.spacing(2),
   padding: theme.spacing(3),
+  flexWrap: 'wrap',
   ...(showDivider && {
     borderTop: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(2),
   }),
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: theme.spacing(1),
+    padding: theme.spacing(2),
+  },
 }));
 
 const LeftActions = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    justifyContent: 'center',
+  },
 }));
 
 const RightActions = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    justifyContent: 'center',
+  },
 }));
 
 /**

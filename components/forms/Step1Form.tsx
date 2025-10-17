@@ -84,7 +84,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
       }}
     >
       <Box sx={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {personalInfoForm.map((field) => (
             <Box key={field.name} sx={{ flex: '1 1 300px', minWidth: '300px' }}>
               <FormField

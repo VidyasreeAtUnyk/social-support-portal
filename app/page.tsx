@@ -3,8 +3,10 @@
 import { Step1Form } from '@components/forms/Step1Form';
 import { Step2Form } from '@components/forms/Step2Form';
 import { Step3Form } from '@components/forms/Step3Form';
+import SecurityNotice from '@lib/components/SecurityNotice';
 import { useToast } from '@lib/context/ToastContext';
 import { FormWizardTemplate } from '@lib/designSystem/templates/FormWizardTemplate';
+import { useFormEncryption } from '@lib/hooks/useFormEncryption';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
 import { setCurrentStep } from '@lib/store/formSlice';
 import { useAppDispatch, useAppSelector } from '@lib/store/hooks';
@@ -17,6 +19,7 @@ export default function HomePage() {
   const currentStep = useAppSelector((state) => state.form.currentStep);
   const { t, i18n } = useTranslation(['common', 'step1', 'step2', 'step3']);
   const { showToast } = useToast();
+  const { encryptData, decryptData, isSupported: encryptionSupported } = useFormEncryption();
 
   const { form, validateStep, clearForm } = useSocialSupportForm();
   const totalSteps = 3;
@@ -49,13 +52,55 @@ export default function HomePage() {
       // Get complete form data from react-hook-form
       const formData = form.getValues();
 
-      // Mock API call
-      const response = await mockSubmitForm(formData);
+      // Encrypt sensitive data before submission
+      const encryptedData = await encryptData(formData);
+      
+      console.log('🔒 Form data encryption status:', {
+        original: formData,
+        encrypted: encryptedData,
+        encryptionSupported: encryptionSupported
+      });
+
+      // Mock API call with encrypted data
+      const response = await mockSubmitForm(encryptedData);
 
       if (response.success) {
         // Show success message or toast
         console.log(response.message);
-        showToast({ message: `Form submitted successfully!`, severity: 'success' });
+        showToast({ 
+          message: `Form submitted successfully! ${encryptionSupported ? 'Data was encrypted.' : 'Note: Encryption not available.'}`, 
+          severity: 'success' 
+        });
+
+        // 🔓 DEV: Decrypt and verify data integrity
+        if (encryptionSupported) {
+          try {
+            // Decrypt the data using the same key from the hook
+            const decryptedData = await decryptData(encryptedData);
+            
+            console.log('🔓 DEV: Decryption verification:', {
+              original: formData,
+              decrypted: decryptedData,
+              dataIntegrity: JSON.stringify(formData) === JSON.stringify(decryptedData) ? '✅ PASSED' : '❌ FAILED'
+            });
+            
+            // Show field-by-field comparison
+            console.log('🔍 DEV: Field-by-field verification:');
+            Object.keys(formData).forEach(section => {
+              if (typeof formData[section] === 'object' && formData[section] !== null) {
+                Object.keys(formData[section]).forEach(field => {
+                  const original = formData[section][field];
+                  const decrypted = decryptedData[section][field];
+                  const match = original === decrypted ? '✅' : '❌';
+                  console.log(`  ${section}.${field}: ${match} (${original} === ${decrypted})`);
+                });
+              }
+            });
+            
+          } catch (decryptError) {
+            console.error('❌ DEV: Decryption failed:', decryptError);
+          }
+        }
 
         // Clear form
         clearForm();
@@ -118,6 +163,7 @@ export default function HomePage() {
         onClick: handleClear,
       }}
     >
+      <SecurityNotice variant="compact" />
       {renderStepContent()}
     </FormWizardTemplate>
   );

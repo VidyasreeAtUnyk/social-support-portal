@@ -61,6 +61,15 @@ export interface CustomTextAreaProps extends Omit<TextFieldProps, 'multiline' | 
    * @default true
    */
   resizable?: boolean;
+  /**
+   * Maximum character limit
+   */
+  maxLength?: number;
+  /**
+   * Whether to show character count
+   * @default false
+   */
+  showCharCount?: boolean;
 }
 
 interface StyledTextFieldProps {
@@ -149,10 +158,30 @@ export const TextArea = forwardRef<HTMLDivElement, CustomTextAreaProps>(
       fullWidth = true,
       rows = 4,
       resizable = true,
+      maxLength,
+      showCharCount = false,
+      value,
+      helperText,
       ...props
     },
     ref,
   ) => {
+    const currentLength = typeof value === 'string' ? value.length : 0;
+    
+    // Prioritize error messages over character count
+    const hasError = props.error || (helperText && helperText !== ' ');
+    const displayHelperText = hasError 
+      ? helperText 
+      : showCharCount && maxLength 
+        ? `${currentLength}/${maxLength}`
+        : helperText;
+
+    const helperTextColor = hasError 
+      ? 'error.main'
+      : showCharCount && maxLength && currentLength > maxLength * 0.9
+        ? 'warning.main'
+        : 'text.secondary';
+
     return (
       <StyledTextField
         ref={ref}
@@ -162,6 +191,23 @@ export const TextArea = forwardRef<HTMLDivElement, CustomTextAreaProps>(
         multiline
         rows={rows}
         resizable={resizable}
+        value={value}
+        helperText={displayHelperText}
+        inputProps={{
+          maxLength,
+          ...props.inputProps,
+        }}
+        FormHelperTextProps={{
+          sx: {
+            ...(showCharCount && !hasError ? {
+              textAlign: 'right',
+              fontSize: '0.75rem',
+            } : {}),
+            color: helperTextColor,
+            ...props.FormHelperTextProps?.sx,
+          },
+          ...props.FormHelperTextProps,
+        }}
         {...props}
       />
     );

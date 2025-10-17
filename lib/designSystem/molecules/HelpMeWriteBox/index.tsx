@@ -3,6 +3,8 @@
 import { Typography } from '@lib/designSystem/atoms/Typography';
 import { AutoFixHigh as AIIcon, Close as CloseIcon } from '@mui/icons-material';
 import {
+  Alert,
+  AlertTitle,
   Box,
   BoxProps,
   Button,
@@ -165,7 +167,7 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
     const [prompt, setPrompt] = useState('');
     const [suggestion, setSuggestion] = useState('');
     const [showSuggestion, setShowSuggestion] = useState(false);
-    const { t } = useTranslation(['common']);
+    const { t, i18n } = useTranslation(['common']);
 
     const handleRequestSuggestion = async () => {
       if (!onRequestSuggestion || !prompt.trim()) return;
@@ -236,6 +238,14 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             </Typography>
           )}
 
+          {/* Security Warning */}
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            <AlertTitle>{t('common:security.aiDisclaimer')}</AlertTitle>
+            <Typography variant="body2">
+              {t('common:security.piiWarning')}
+            </Typography>
+          </Alert>
+
           <TextField
             fullWidth
             multiline
@@ -244,15 +254,38 @@ export const HelpMeWriteBox = forwardRef<HTMLDivElement, HelpMeWriteBoxProps>(
             placeholder={t('common:aiPlaceholder')}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            sx={{ mb: 2 }}
+            sx={{ mb: 1 }}
+            inputProps={{
+              maxLength: 1000, // Limit input length
+            }}
+            helperText={`${prompt.length}/1000`}
+            FormHelperTextProps={{
+              sx: {
+                textAlign: 'right',
+                fontSize: '0.75rem',
+                color: prompt.length > 900 ? 'warning.main' : 'text.secondary',
+              }
+            }}
           />
 
           <Button
             variant="contained"
             onClick={handleRequestSuggestion}
-            disabled={loading || !prompt.trim()}
+            disabled={loading || !prompt.trim() || showSuggestion}
             startIcon={loading ? <CircularProgress size={16} /> : <AIIcon />}
-            sx={{ mb: 2 }}
+            sx={{ 
+              mb: 2,
+              minWidth: 'auto',
+              whiteSpace: 'nowrap',
+              '& .MuiButton-startIcon': {
+                marginRight: 1,
+                marginLeft: 1,
+              },
+              '& .MuiButton-startIcon.MuiButton-iconSizeMedium': {
+                marginRight: 1,
+                marginLeft: 1,
+              }
+            }}
           >
             {loading ? t('common:actions.generating') : t('common:actions.generate')}
           </Button>
