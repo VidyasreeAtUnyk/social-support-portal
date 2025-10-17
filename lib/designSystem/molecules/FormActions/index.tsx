@@ -98,7 +98,7 @@ const StyledFormActions = styled(Box, {
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     alignItems: 'stretch',
-    gap: theme.spacing(1),
+    gap: theme.spacing(2),
     padding: theme.spacing(2),
   },
 }));
