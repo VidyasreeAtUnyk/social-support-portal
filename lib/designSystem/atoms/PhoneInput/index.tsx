@@ -236,6 +236,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     borderRadius: theme.shape.borderRadius,
     transition: 'all 0.2s ease-in-out',
+    fontSize: '1rem',
+    '& .MuiOutlinedInput-input': {
+      padding: '12px 14px',
+    },
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.palette.primary.main,
     },
@@ -247,10 +251,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 const CountrySelector = styled(Select)(({ theme }) => ({
   minWidth: 120,
+  fontSize: '1rem',
   '& .MuiSelect-select': {
     display: 'flex',
     alignItems: 'center',
     gap: theme.spacing(1),
+    padding: '12px 14px',
   },
 }));
 
@@ -309,8 +315,8 @@ export const PhoneInput = forwardRef<HTMLDivElement, PhoneInputProps>(
       // Format the number if enabled
       if (formatOnChange && inputValue) {
         try {
-          // Use international format to avoid locale-dependent formatting
-          formattedValue = formatPhoneNumber(inputValue, 'international', selectedCountry);
+          // Use national format since country code is already shown in dropdown
+          formattedValue = formatPhoneNumber(inputValue, 'national', selectedCountry);
         } catch {
           // If formatting fails, use the raw input
           formattedValue = inputValue;
@@ -370,11 +376,7 @@ export const PhoneInput = forwardRef<HTMLDivElement, PhoneInputProps>(
           type="tel"
           value={phoneNumber}
           onChange={handlePhoneChange}
-          placeholder={
-            selectedCountryData
-              ? `${selectedCountryData.phoneCode} xxx xxx xxx`
-              : t('phone.placeholder', { ns: 'common' })
-          }
+          placeholder="xxx xxx xxx"
           error={!!error}
           helperText={
             error ||

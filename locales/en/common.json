@@ -65,5 +65,30 @@
       "parsingError": "Error parsing phone number",
       "countryNotAllowed": "Phone number from {{country}} is not allowed"
     }
+  },
+  "help": {
+    "selectCountryFirst": "Please select a country first to load available states/provinces",
+    "fieldRequired": "This field is required",
+    "phoneFormat": "Enter your phone number without the country code",
+    "aiSuggestion": "AI can help you write better descriptions for your situation"
+  },
+  "toast": {
+    "success": {
+      "formSubmitted": "Form submitted successfully!",
+      "formSubmittedEncrypted": "Form submitted successfully! Data was encrypted.",
+      "formSubmittedNoEncryption": "Form submitted successfully! Note: Encryption not available.",
+      "draftSaved": "Draft saved successfully!"
+    },
+    "error": {
+      "submissionFailed": "Submission failed!",
+      "aiGenerationFailed": "AI generation failed",
+      "genericError": "An error occurred"
+    },
+    "warning": {
+      "validationFailed": "Please check the form for errors"
+    },
+    "info": {
+      "processing": "Processing your request..."
+    }
   }
 }

@@ -2,6 +2,7 @@
 
 import { ErrorBoundary } from '@lib/components/ErrorBoundary';
 import { DEFAULT_ALLOWED_COUNTRIES, DEFAULT_PHONE_COUNTRY } from '@lib/config/countries';
+import { LANGUAGES, TRANSLATION_NAMESPACES } from '@lib/constants';
 import { FieldConfig, FieldOption, personalInfoForm } from '@lib/content/step1Form';
 import { FormField, Input, Select } from '@lib/designSystem';
 import { PhoneInput } from '@lib/designSystem/atoms/PhoneInput';
@@ -26,18 +27,18 @@ interface Step1FormProps {
 }
 
 export const Step1Form = ({ form }: Step1FormProps) => {
-  const { t, i18n } = useTranslation(['step1', 'countries', 'states']);
+  const { t, i18n } = useTranslation([TRANSLATION_NAMESPACES.STEP1, TRANSLATION_NAMESPACES.COUNTRIES, TRANSLATION_NAMESPACES.STATES]);
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [states, setStates] = useState<StateOption[]>([]);
   const watchedValues = form.watch();
 
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language === LANGUAGES.ARABIC;
 
   // Load countries from translationsag
   useEffect(() => {
     const loadCountries = async () => {
       const loadedCountries =
-        (t('list', { ns: 'countries', returnObjects: true }) as CountryOption[]) || [];
+        (t('list', { ns: TRANSLATION_NAMESPACES.COUNTRIES, returnObjects: true }) as CountryOption[]) || [];
       setCountries(loadedCountries);
     };
     loadCountries();
@@ -48,7 +49,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
   useEffect(() => {
     if (!countryCode) return setStates([]);
 
-    const loadedStates = (t(countryCode, { ns: 'states', returnObjects: true }) as StateOption[]) || [];
+    const loadedStates = (t(countryCode, { ns: TRANSLATION_NAMESPACES.STATES, returnObjects: true }) as StateOption[]) || [];
     setStates(loadedStates);
   }, [countryCode, countries, i18n.language, t]);
 
@@ -88,10 +89,11 @@ export const Step1Form = ({ form }: Step1FormProps) => {
           {personalInfoForm.map((field) => (
             <Box key={field.name} sx={{ flex: '1 1 300px', minWidth: '300px' }}>
               <FormField
-                label={t(field.label, { ns: 'step1' })}
+                label={t(field.label, { ns: TRANSLATION_NAMESPACES.STEP1 })}
                 required={field.required}
                 control={form.control}
                 name={field.name}
+                tooltip={field.tooltip}
               >
                 {({ value, onChange, error, helperText }) =>
                   field.type === 'select' ? (
@@ -112,7 +114,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                     >
                       {getOptions(field as FieldConfig).map((opt) => (
                         <MenuItem key={opt.value} value={opt.value}>
-                          {t(opt.label, { ns: 'step1' })}
+                          {t(opt.label, { ns: TRANSLATION_NAMESPACES.STEP1 })}
                         </MenuItem>
                       ))}
                     </Select>
@@ -129,9 +131,9 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                           form.setValue('personalInfo.phoneCountry' as any, country);
                         }
                       }}
-                      error={error ? t('phone.errors.notValid', { ns: 'common' }) : undefined}
+                      error={error ? t('phone.errors.notValid', { ns: TRANSLATION_NAMESPACES.COMMON }) : undefined}
                       helperText={helperText || ' '} // to maintain height
-                      placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                      placeholder={field.placeholder ? t(field.placeholder, { ns: TRANSLATION_NAMESPACES.STEP1 }) : ''}
                       defaultCountry={DEFAULT_PHONE_COUNTRY}
                       showCountrySelector={true}
                       formatOnChange={true}
@@ -145,7 +147,7 @@ export const Step1Form = ({ form }: Step1FormProps) => {
                       onChange={onChange}
                       error={error}
                       helperText={helperText || ' '} // to maintain height
-                      placeholder={field.placeholder ? t(field.placeholder, { ns: 'step1' }) : ''}
+                      placeholder={field.placeholder ? t(field.placeholder, { ns: TRANSLATION_NAMESPACES.STEP1 }) : ''}
                     />
                   )
                 }

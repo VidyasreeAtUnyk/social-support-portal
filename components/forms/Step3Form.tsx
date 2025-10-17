@@ -2,11 +2,13 @@
 
 import { AI_CONFIG } from '@lib/ai/aiConfig';
 import { ErrorBoundary } from '@lib/components/ErrorBoundary';
+import { LANGUAGES, STEP3_FIELDS, TRANSLATION_NAMESPACES } from '@lib/constants';
 import { Step3FieldConfig, situationDescriptionsForm } from '@lib/content/step3Form';
 import { useToast } from '@lib/context/ToastContext';
 import { FormField, TextArea } from '@lib/designSystem';
 import { HelpMeWriteBox } from '@lib/designSystem/';
 import { useSocialSupportForm } from '@lib/hooks/useSocialSupportForm';
+import { useTranslatedToast } from '@lib/hooks/useTranslatedToast';
 import { Box, Button } from '@mui/material';
 import { getAISuggestion } from '@services/ai';
 import { AISuggestionResponse } from '@services/ai/types';
@@ -18,28 +20,29 @@ interface Step3FormProps {
 }
 
 export const Step3Form = ({ form }: Step3FormProps) => {
-  const { t, i18n } = useTranslation(['step3', 'common']);
-  const isRTL = i18n.language === 'ar';
+  const { t, i18n } = useTranslation([TRANSLATION_NAMESPACES.STEP3, TRANSLATION_NAMESPACES.COMMON]);
+  const isRTL = i18n.language === LANGUAGES.ARABIC;
   const { showToast } = useToast();
+  const { showErrorToast } = useTranslatedToast();
 
   const [helpBoxOpen, setHelpBoxOpen] = useState<{
-    financialSituation: boolean;
-    employmentCircumstances: boolean;
-    reasonForApplying: boolean;
+    [STEP3_FIELDS.FINANCIAL_SITUATION]: boolean;
+    [STEP3_FIELDS.EMPLOYMENT_CIRCUMSTANCES]: boolean;
+    [STEP3_FIELDS.REASON_FOR_APPLYING]: boolean;
   }>({
-    financialSituation: false,
-    employmentCircumstances: false,
-    reasonForApplying: false,
+    [STEP3_FIELDS.FINANCIAL_SITUATION]: false,
+    [STEP3_FIELDS.EMPLOYMENT_CIRCUMSTANCES]: false,
+    [STEP3_FIELDS.REASON_FOR_APPLYING]: false,
   });
 
   const [loadingField, setLoadingField] = useState<{
-    financialSituation: boolean;
-    employmentCircumstances: boolean;
-    reasonForApplying: boolean;
+    [STEP3_FIELDS.FINANCIAL_SITUATION]: boolean;
+    [STEP3_FIELDS.EMPLOYMENT_CIRCUMSTANCES]: boolean;
+    [STEP3_FIELDS.REASON_FOR_APPLYING]: boolean;
   }>({
-    financialSituation: false,
-    employmentCircumstances: false,
-    reasonForApplying: false,
+    [STEP3_FIELDS.FINANCIAL_SITUATION]: false,
+    [STEP3_FIELDS.EMPLOYMENT_CIRCUMSTANCES]: false,
+    [STEP3_FIELDS.REASON_FOR_APPLYING]: false,
   });
 
   const openHelpBox = (field: keyof typeof helpBoxOpen) => {
@@ -78,7 +81,7 @@ export const Step3Form = ({ form }: Step3FormProps) => {
       return data.choices?.[0]?.message?.content || '';
     } catch (err: any) {
       // setSuggestion(`Error: ${err.message}`);
-      showToast({ message: `Error: ${err.message}`, severity: 'error' });
+      showErrorToast('toast.error.aiGenerationFailed');
       throw err;
     } finally {
       setLoadingField((prev) => ({ ...prev, [field]: false }));
@@ -95,9 +98,9 @@ export const Step3Form = ({ form }: Step3FormProps) => {
   };
 
   const fields: Array<keyof typeof helpBoxOpen> = [
-    'financialSituation',
-    'employmentCircumstances',
-    'reasonForApplying',
+    STEP3_FIELDS.FINANCIAL_SITUATION,
+    STEP3_FIELDS.EMPLOYMENT_CIRCUMSTANCES,
+    STEP3_FIELDS.REASON_FOR_APPLYING,
   ];
 
   return (

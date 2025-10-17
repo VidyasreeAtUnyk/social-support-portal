@@ -89,7 +89,8 @@ const StyledFormActions = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
-  padding: theme.spacing(3),
+  paddingTop: theme.spacing(3),
+  paddingBottom: theme.spacing(3),
   flexWrap: 'wrap',
   ...(showDivider && {
     borderTop: `1px solid ${theme.palette.divider}`,
@@ -99,7 +100,8 @@ const StyledFormActions = styled(Box, {
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: theme.spacing(2),
-    padding: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));
 
@@ -197,7 +199,7 @@ export const FormActions = forwardRef<HTMLDivElement, FormActionsProps>(
             )}
             {cancelButton && (
               <Button
-                variant="text"
+                variant="outlined"
                 color="secondary"
                 onClick={cancelButton.onClick}
                 disabled={cancelButton.disabled}

@@ -126,7 +126,7 @@ interface StepLabelProps {
 const StepLabel = styled(Typography, {
   shouldForwardProp: (prop) => !['active', 'completed'].includes(prop as string),
 })<StepLabelProps>(({ theme, active, completed }) => ({
-  fontSize: '0.75rem',
+  fontSize: '1rem',
   textAlign: 'center',
   color: completed
     ? theme.palette.success.main
@@ -177,11 +177,11 @@ export const StepProgressBar = forwardRef<HTMLDivElement, StepProgressBarProps>(
     return (
       <StyledProgressContainer ref={ref} variant={variant} {...props}>
         <ProgressHeader>
-          <Typography variant="subtitle2" color="textPrimary">
+          <Typography variant="subtitle1" color="textPrimary" sx={{ fontSize: '1rem', fontWeight: 600 }}>
             {t('common:progress')}
           </Typography>
           {showPercentage && (
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body1" color="textSecondary" sx={{ fontSize: '0.9rem', fontWeight: 500 }}>
               {Math.round(progress)}%
             </Typography>
           )}

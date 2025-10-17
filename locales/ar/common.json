@@ -65,5 +65,30 @@
       "parsingError": "خطأ في تحليل رقم الهاتف",
       "countryNotAllowed": "رقم الهاتف من {{country}} غير مسموح"
     }
+  },
+  "help": {
+    "selectCountryFirst": "يرجى اختيار البلد أولاً لتحميل الولايات/المحافظات المتاحة",
+    "fieldRequired": "هذا الحقل مطلوب",
+    "phoneFormat": "أدخل رقم هاتفك بدون رمز البلد",
+    "aiSuggestion": "يمكن للذكاء الاصطناعي مساعدتك في كتابة أوصاف أفضل لحالتك"
+  },
+  "toast": {
+    "success": {
+      "formSubmitted": "تم إرسال النموذج بنجاح!",
+      "formSubmittedEncrypted": "تم إرسال النموذج بنجاح! تم تشفير البيانات.",
+      "formSubmittedNoEncryption": "تم إرسال النموذج بنجاح! ملاحظة: التشفير غير متاح.",
+      "draftSaved": "تم حفظ المسودة بنجاح!"
+    },
+    "error": {
+      "submissionFailed": "فشل في الإرسال!",
+      "aiGenerationFailed": "فشل في توليد الذكاء الاصطناعي",
+      "genericError": "حدث خطأ"
+    },
+    "warning": {
+      "validationFailed": "يرجى التحقق من النموذج للأخطاء"
+    },
+    "info": {
+      "processing": "جاري معالجة طلبك..."
+    }
   }
 }

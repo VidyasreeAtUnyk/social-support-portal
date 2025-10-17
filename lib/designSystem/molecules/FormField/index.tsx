@@ -1,6 +1,7 @@
 'use client';
 
-import { Typography } from '@lib/designSystem/atoms/Typography';
+import { DEFAULT_NAMESPACE } from '@lib/constants';
+import { HelpTooltip, Typography } from '@lib/designSystem/atoms';
 import { Box, BoxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
@@ -10,7 +11,7 @@ export interface FormFieldProps extends Omit<BoxProps, 'children'> {
   /**
    * Field label
    */
-  label?: string;
+  label?: string | React.ReactNode;
   /**
    * Field description/helper text
    */
@@ -60,6 +61,14 @@ export interface FormFieldProps extends Omit<BoxProps, 'children'> {
    * Error message to display
    */
   error?: string;
+  /**
+   * Tooltip configuration
+   */
+  tooltip?: {
+    translationKey: string;
+    namespace?: string;
+    placement?: 'top' | 'bottom' | 'left' | 'right';
+  };
 }
 
 interface StyledFormFieldProps {
@@ -147,6 +156,7 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
       showRequiredIndicator = true,
       control,
       name,
+      tooltip,
       ...props
     },
     ref,
@@ -196,10 +206,21 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
         {label && (
           <Box className="form-field-label">
             <LabelContainer>
-              <Typography variant="subtitle2" color="textPrimary">
-                {label}
-              </Typography>
+              {typeof label === 'string' ? (
+                <Typography variant="subtitle1" color="textPrimary">
+                  {label}
+                </Typography>
+              ) : (
+                label
+              )}
               {required && showRequiredIndicator && <RequiredIndicator>*</RequiredIndicator>}
+              {tooltip && (
+                <HelpTooltip
+                  translationKey={tooltip.translationKey}
+                  namespace={tooltip.namespace || DEFAULT_NAMESPACE}
+                  placement={tooltip.placement || 'top'}
+                />
+              )}
             </LabelContainer>
             {description && (
               <Typography variant="caption" color="textSecondary">

@@ -1,5 +1,6 @@
 'use client';
 
+import { LANGUAGES, LANGUAGE_DISPLAY_NAMES, getEffectiveLanguage } from '@lib/constants';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -10,12 +11,12 @@ export const LanguageSwitcher = () => {
     i18n.changeLanguage(e.target.value as string);
   };
 
-  const effectiveValue = i18n.language.includes('en') ? 'en' : i18n.language;
+  const effectiveValue = getEffectiveLanguage(i18n.language);
 
   return (
     <Select value={effectiveValue} onChange={handleChange} size="small" sx={{ minWidth: 100 }}>
-      <MenuItem value="en">English</MenuItem>
-      <MenuItem value="ar">Arabic</MenuItem>
+      <MenuItem value={LANGUAGES.ENGLISH}>{LANGUAGE_DISPLAY_NAMES[LANGUAGES.ENGLISH]}</MenuItem>
+      <MenuItem value={LANGUAGES.ARABIC}>{LANGUAGE_DISPLAY_NAMES[LANGUAGES.ARABIC]}</MenuItem>
     </Select>
   );
 };
