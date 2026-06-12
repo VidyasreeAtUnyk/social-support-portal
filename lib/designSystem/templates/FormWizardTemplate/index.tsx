@@ -109,22 +109,22 @@ interface StyledContainerProps {
 
 const StyledContainer = styled(Container)<StyledContainerProps>(
   ({ theme, variant = 'default' }) => ({
-    paddingTop: designTokens.spacing.xxxl,
-    paddingBottom: designTokens.spacing.xxxl,
+    paddingTop: designTokens.spacing.xl,
+    paddingBottom: designTokens.spacing.xl,
     ...(variant === 'compact' && {
-      paddingTop: designTokens.spacing.xl,
-      paddingBottom: designTokens.spacing.xl,
+      paddingTop: designTokens.spacing.lg,
+      paddingBottom: designTokens.spacing.lg,
     }),
     ...(variant === 'detailed' && {
-      paddingTop: designTokens.spacing.xxxl * 1.5,
-      paddingBottom: designTokens.spacing.xxxl * 1.5,
+      paddingTop: designTokens.spacing.xxl,
+      paddingBottom: designTokens.spacing.xxl,
     }),
   }),
 );
 
 const FormHeader = styled(Box)(({ theme }) => ({
   textAlign: 'center',
-  marginBottom: designTokens.spacing.xl,
+  marginBottom: designTokens.spacing.md,
   position: 'relative',
   // '&::after': {
   //   content: '""',
@@ -140,12 +140,15 @@ const FormHeader = styled(Box)(({ theme }) => ({
 }));
 
 const FormContent = styled(Paper)(({ theme }) => ({
-  padding: designTokens.spacing.xl,
+  padding: designTokens.spacing.lg,
   borderRadius: designTokens.borderRadius.xl,
-  boxShadow: designTokens.shadows.xl,
-  background: alpha(theme.palette.background.paper, 0.95),
-  backdropFilter: 'blur(10px)',
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+  boxShadow: '0 18px 40px rgba(15, 23, 42, 0.12)',
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(30, 41, 59, 0.96))'
+      : 'linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98))',
+  backdropFilter: 'blur(12px)',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
   position: 'relative',
   overflow: 'hidden',
   '&::before': {
@@ -155,7 +158,15 @@ const FormContent = styled(Paper)(({ theme }) => ({
     left: 0,
     right: 0,
     height: 4,
-    background: designTokens.gradients.primary,
+    background: 'linear-gradient(90deg, #38bdf8, #818cf8, #a78bfa)',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    borderRadius: designTokens.borderRadius.xl,
+    border: '1px solid rgba(255,255,255,0.35)',
+    pointerEvents: 'none',
   },
 }));
 
@@ -167,7 +178,7 @@ const StepIndicator = styled(Box)(({ theme }) => ({
   padding: 0,
   fontSize: designTokens.typography.fontSize.md,
   fontWeight: designTokens.typography.fontWeight.semibold,
-  marginTop: designTokens.spacing.md,
+  marginTop: designTokens.spacing.sm,
   marginBottom: 0,
 }));
 
@@ -228,9 +239,9 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
             variant="h2" 
             color="textPrimary" 
             sx={{ 
-              mb: 2,
+              mb: 1,
               fontWeight: designTokens.typography.fontWeight.bold,
-              fontSize: designTokens.typography.fontSize['4xl'],
+              fontSize: { xs: '2rem', md: '2.5rem' },
               background: designTokens.gradients.primary,
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
@@ -245,7 +256,10 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
               color="textSecondary"
               sx={{
                 fontWeight: designTokens.typography.fontWeight.medium,
-                fontSize: designTokens.typography.fontSize.xl,
+                fontSize: { xs: designTokens.typography.fontSize.lg, md: designTokens.typography.fontSize.xl },
+                lineHeight: 1.4,
+                maxWidth: '42rem',
+                mx: 'auto',
               }}
             >
               {subtitle}
@@ -257,7 +271,7 @@ export const FormWizardTemplate = forwardRef<HTMLDivElement, FormWizardTemplateP
         </FormHeader>
 
         {showProgress && (
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ mb: 2 }}>
             <StepProgressBar
               currentStep={currentStep}
               totalSteps={totalSteps}
