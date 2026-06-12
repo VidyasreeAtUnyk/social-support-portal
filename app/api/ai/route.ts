@@ -59,9 +59,9 @@ export async function POST(req: NextRequest) {
     const response = await api.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-5.4-mini',
         messages,
-        max_tokens: 500,
+        max_completion_tokens: 500,
         temperature: 0.7, // Add some randomness but keep it controlled
       },
       {
