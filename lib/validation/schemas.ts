@@ -21,7 +21,7 @@ export const personalInfoSchema = yup.object({
     .string()
     .transform((value) => (value === '' ? undefined : value))
     .required('errors.dob.required')
-    .test('is-valid-date', 'errors.dob.invalid', (value) => {
+    .test('is-valid-date', 'errors.dob.future', (value) => {
       if (!value) return false;
       const date = new Date(value);
       return !isNaN(date.getTime()) && date <= new Date() && date >= new Date(1900, 0, 1);
